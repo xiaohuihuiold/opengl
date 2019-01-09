@@ -48,10 +48,10 @@ RM = /home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cm
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xhh/CLionProjects/opengl/opengl01
+CMAKE_SOURCE_DIR = /home/xhh/CLionProjects/opengl/opengl_glfw01
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xhh/CLionProjects/opengl/opengl01/cmake-build-debug
+CMAKE_BINARY_DIR = /home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xhh/CLionProjects/opengl/opengl01/cmake-build-debug/CMakeFiles /home/xhh/CLionProjects/opengl/opengl01/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles /home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xhh/CLionProjects/opengl/opengl01/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,111 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named opengl01
+# Target rules for targets named glad
 
 # Build rule for target.
-opengl01: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 opengl01
-.PHONY : opengl01
+glad: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 glad
+.PHONY : glad
 
 # fast build rule for target.
-opengl01/fast:
-	$(MAKE) -f CMakeFiles/opengl01.dir/build.make CMakeFiles/opengl01.dir/build
-.PHONY : opengl01/fast
+glad/fast:
+	$(MAKE) -f CMakeFiles/glad.dir/build.make CMakeFiles/glad.dir/build
+.PHONY : glad/fast
 
-main.o: main.cpp.o
+#=============================================================================
+# Target rules for targets named opengl_glfw01
 
-.PHONY : main.o
+# Build rule for target.
+opengl_glfw01: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 opengl_glfw01
+.PHONY : opengl_glfw01
+
+# fast build rule for target.
+opengl_glfw01/fast:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/build
+.PHONY : opengl_glfw01/fast
+
+src/glad/glad.o: src/glad/glad.c.o
+
+.PHONY : src/glad/glad.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/opengl01.dir/build.make CMakeFiles/opengl01.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/glad/glad.c.o:
+	$(MAKE) -f CMakeFiles/glad.dir/build.make CMakeFiles/glad.dir/src/glad/glad.c.o
+.PHONY : src/glad/glad.c.o
 
-main.i: main.cpp.i
+src/glad/glad.i: src/glad/glad.c.i
 
-.PHONY : main.i
+.PHONY : src/glad/glad.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/opengl01.dir/build.make CMakeFiles/opengl01.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/glad/glad.c.i:
+	$(MAKE) -f CMakeFiles/glad.dir/build.make CMakeFiles/glad.dir/src/glad/glad.c.i
+.PHONY : src/glad/glad.c.i
 
-main.s: main.cpp.s
+src/glad/glad.s: src/glad/glad.c.s
 
-.PHONY : main.s
+.PHONY : src/glad/glad.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/opengl01.dir/build.make CMakeFiles/opengl01.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/glad/glad.c.s:
+	$(MAKE) -f CMakeFiles/glad.dir/build.make CMakeFiles/glad.dir/src/glad/glad.c.s
+.PHONY : src/glad/glad.c.s
+
+src/main.o: src/main.cpp.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
+src/shader/Shader.o: src/shader/Shader.cpp.o
+
+.PHONY : src/shader/Shader.o
+
+# target to build an object file
+src/shader/Shader.cpp.o:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.o
+.PHONY : src/shader/Shader.cpp.o
+
+src/shader/Shader.i: src/shader/Shader.cpp.i
+
+.PHONY : src/shader/Shader.i
+
+# target to preprocess a source file
+src/shader/Shader.cpp.i:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.i
+.PHONY : src/shader/Shader.cpp.i
+
+src/shader/Shader.s: src/shader/Shader.cpp.s
+
+.PHONY : src/shader/Shader.s
+
+# target to generate assembly for a file
+src/shader/Shader.cpp.s:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.s
+.PHONY : src/shader/Shader.cpp.s
 
 # Help Target
 help:
@@ -157,11 +224,18 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... opengl01"
 	@echo "... edit_cache"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... glad"
+	@echo "... opengl_glfw01"
+	@echo "... src/glad/glad.o"
+	@echo "... src/glad/glad.i"
+	@echo "... src/glad/glad.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/shader/Shader.o"
+	@echo "... src/shader/Shader.i"
+	@echo "... src/shader/Shader.s"
 .PHONY : help
 
 

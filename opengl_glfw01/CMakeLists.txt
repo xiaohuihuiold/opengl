@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.13)
+project(opengl_glfw01)
+
+set(CMAKE_CXX_STANDARD 14)
+set(PROJECT_INCLUDE "./include")
+
+include_directories(${PROJECT_INCLUDE})
+
+add_library(glad STATIC src/glad/glad.c)
+add_executable(opengl_glfw01 src/main.cpp src/shader/Shader.cpp src/shader/Shader.h)
+
+target_link_libraries(opengl_glfw01 glad)
+target_link_libraries(opengl_glfw01 GLEW)
+target_link_libraries(opengl_glfw01 glfw3)
+target_link_libraries(opengl_glfw01 GL)
+target_link_libraries(opengl_glfw01 X11)
+target_link_libraries(opengl_glfw01 pthread)
+target_link_libraries(opengl_glfw01 Xrandr)
+target_link_libraries(opengl_glfw01 Xi)
+target_link_libraries(opengl_glfw01 Xxf86vm)
+target_link_libraries(opengl_glfw01 Xinerama)
+target_link_libraries(opengl_glfw01 Xcursor)
+target_link_libraries(opengl_glfw01 rt)
+target_link_libraries(opengl_glfw01 m)
+target_link_libraries(opengl_glfw01 dl)

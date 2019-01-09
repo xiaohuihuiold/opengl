@@ -35,6 +35,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/CMakeTestCCompiler.cmake"
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/CMakeTestCXXCompiler.cmake"
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/CMakeTestCompilerCommon.cmake"
+  "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/CMakeUnixFindMake.cmake"
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/Compiler/ADSP-DetermineCompiler.cmake"
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/Compiler/ARMCC-DetermineCompiler.cmake"
   "/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/share/cmake-3.13/Modules/Compiler/AppleClang-DetermineCompiler.cmake"
@@ -117,5 +118,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/opengl01.dir/DependInfo.cmake"
+  "CMakeFiles/glad.dir/DependInfo.cmake"
+  "CMakeFiles/opengl_glfw01.dir/DependInfo.cmake"
   )

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/opengl_glfw01.dir/src/main.cpp.o CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.o  -o opengl_glfw01 libglad.a -lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lXinerama -lXcursor -lrt -lm -ldl 
