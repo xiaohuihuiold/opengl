@@ -6,8 +6,12 @@ CMakeFiles/opengl_glfw01.dir/src/main.cpp.o
  .././include/glad/glad.h
  /home/xhh/CLionProjects/opengl/opengl_glfw01/src/main.cpp
  /home/xhh/CLionProjects/opengl/opengl_glfw01/src/shader/Shader.h
+ /home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.h
 CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.o
  .././include/KHR/khrplatform.h
  .././include/glad/glad.h
  /home/xhh/CLionProjects/opengl/opengl_glfw01/src/shader/Shader.cpp
  /home/xhh/CLionProjects/opengl/opengl_glfw01/src/shader/Shader.h
+CMakeFiles/opengl_glfw01.dir/src/stb_image.cpp.o
+ /home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.cpp
+ /home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.h

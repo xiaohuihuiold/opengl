@@ -142,6 +142,12 @@
 		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw01/src/shader/Shader.h">
 			<Option target="opengl_glfw01"/>
 		</Unit>
+		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.cpp">
+			<Option target="opengl_glfw01"/>
+		</Unit>
+		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.h">
+			<Option target="opengl_glfw01"/>
+		</Unit>
 		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw01/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

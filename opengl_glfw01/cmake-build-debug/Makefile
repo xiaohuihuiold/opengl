@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5153.40/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5153.40/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debu
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5153.40/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/xhh/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5153.40/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -217,6 +217,33 @@ src/shader/Shader.cpp.s:
 	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.s
 .PHONY : src/shader/Shader.cpp.s
 
+src/stb_image.o: src/stb_image.cpp.o
+
+.PHONY : src/stb_image.o
+
+# target to build an object file
+src/stb_image.cpp.o:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/stb_image.cpp.o
+.PHONY : src/stb_image.cpp.o
+
+src/stb_image.i: src/stb_image.cpp.i
+
+.PHONY : src/stb_image.i
+
+# target to preprocess a source file
+src/stb_image.cpp.i:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/stb_image.cpp.i
+.PHONY : src/stb_image.cpp.i
+
+src/stb_image.s: src/stb_image.cpp.s
+
+.PHONY : src/stb_image.s
+
+# target to generate assembly for a file
+src/stb_image.cpp.s:
+	$(MAKE) -f CMakeFiles/opengl_glfw01.dir/build.make CMakeFiles/opengl_glfw01.dir/src/stb_image.cpp.s
+.PHONY : src/stb_image.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -236,6 +263,9 @@ help:
 	@echo "... src/shader/Shader.o"
 	@echo "... src/shader/Shader.i"
 	@echo "... src/shader/Shader.s"
+	@echo "... src/stb_image.o"
+	@echo "... src/stb_image.i"
+	@echo "... src/stb_image.s"
 .PHONY : help
 
 

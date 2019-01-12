@@ -7,7 +7,7 @@ set(PROJECT_INCLUDE "./include")
 include_directories(${PROJECT_INCLUDE})
 
 add_library(glad STATIC src/glad/glad.c)
-add_executable(opengl_glfw01 src/main.cpp src/shader/Shader.cpp src/shader/Shader.h)
+add_executable(opengl_glfw01 src/main.cpp src/shader/Shader.cpp src/shader/Shader.h src/stb_image.cpp src/stb_image.h)
 
 target_link_libraries(opengl_glfw01 glad)
 target_link_libraries(opengl_glfw01 GLEW)

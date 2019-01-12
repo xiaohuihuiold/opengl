@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/xhh/CLionProjects/opengl/opengl_glfw01/src/main.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles/opengl_glfw01.dir/src/main.cpp.o"
   "/home/xhh/CLionProjects/opengl/opengl_glfw01/src/shader/Shader.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles/opengl_glfw01.dir/src/shader/Shader.cpp.o"
+  "/home/xhh/CLionProjects/opengl/opengl_glfw01/src/stb_image.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw01/cmake-build-debug/CMakeFiles/opengl_glfw01.dir/src/stb_image.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
