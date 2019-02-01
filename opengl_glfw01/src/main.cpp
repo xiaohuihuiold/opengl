@@ -80,9 +80,26 @@ GLuint indices[] = {
         2, 3, 0
 };
 
+/*// 相机位置向量
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+// 相机观察目标向量
+glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+// 相机位置减去目标向量取得相机方向,此处反向减求得正方向
+glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
+// 上向量
+glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+// 上向量与相机位置叉乘取得与他们垂直的右轴
+glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+// 相机右轴与相机方向叉乘取得上轴
+glm::vec3 cameraUp = glm::cross(cameraRight, cameraDirection);*/
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 void processInput(GLFWwindow *);
 
-void framebuffer_size_callback(GLFWwindow *, int, int);
+void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 
 int main() {
     glfwInit();
@@ -98,7 +115,7 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
     // Init GLAD
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -111,7 +128,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // 顶点数组对象
     GLuint VAO;
@@ -148,9 +165,9 @@ int main() {
     // 重复
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // 线性过渡
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // 取临近色值
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     int width;
     int height;
     int nrChannels;
@@ -159,20 +176,6 @@ int main() {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
-
-
-    // 相机位置向量
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-    // 相机观察目标向量
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    // 相机位置减去目标向量取得相机方向,此处反向减求得正方向
-    glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
-    // 上向量
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    // 上向量与相机位置叉乘取得与他们垂直的右轴
-    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-    // 相机右轴与相机方向叉乘取得上轴
-    glm::vec3 cameraUp = glm::cross(cameraRight, cameraDirection);
 
     // 透视投影矩阵
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f,
@@ -191,14 +194,10 @@ int main() {
         // 根据宽高比创建投影矩阵
         projection = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f,
                                       100.0f);
-        // 相机环绕观察
-        float radius = 10.0f;
-        float camX = (float) sin(glfwGetTime()) * radius;
-        float camY = (float) tan(glfwGetTime()) * radius;
-        float camZ = (float) cos(glfwGetTime()) * radius;
+
         glm::mat4 view = glm::mat4(1.0f);
         // lookAt矩阵 相机位置，观察目标，上向量
-        view = glm::lookAt(glm::vec3(camX, camZ, camZ), cameraTarget, up);
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
         GLint viewLocation = glGetUniformLocation(shader.ID, "viewMatrix");
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
@@ -231,12 +230,43 @@ int main() {
 }
 
 void processInput(GLFWwindow *window) {
+    // 相机移动速度
+    float cameraSpeed = 0.05f;
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    } else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        // 相机前进
+        // 相机位置直接加上前进向量
+        cameraPos += cameraSpeed * cameraFront;
+    } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        // 相机后退
+        // 和上面相反，所以直接减就行了
+        cameraPos -= cameraSpeed * cameraFront;
+    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        // 相机向左移动
+        // 先通过叉乘创建右向量
+        // 再减去右向量达到向左移动的目的
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        // 相机向右移动
+        // 同上
+        // 只不过向右移动直接加上就行了
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    }
+    // 可能前后左右移动同时上下移动
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        // 相机向上移动
+        // 直接加上上向量就行了
+        cameraPos += cameraSpeed * cameraUp;
+    } else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        // 相机向下移动
+        // 和上面相反,直接减去
+        cameraPos -= cameraSpeed * cameraUp;
     }
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     WINDOW_WIDTH = width;
     WINDOW_HEIGHT = height;
     glViewport(0, 0, width, height);
