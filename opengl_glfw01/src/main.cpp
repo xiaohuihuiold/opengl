@@ -97,6 +97,11 @@ glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+// 增量时间
+float deltaTime = 0.0f;
+// 最后一帧的时间
+float lastFrame = 0.0f;
+
 void processInput(GLFWwindow *);
 
 void framebufferSizeCallback(GLFWwindow *window, int width, int height);
@@ -106,6 +111,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     // Create openGL window
     GLFWwindow *window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, nullptr, nullptr);
@@ -115,6 +121,9 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
+    // 设置捕获光标
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // 窗口大小改变回调
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
     // Init GLAD
@@ -126,6 +135,8 @@ int main() {
 
     // 启用深度缓冲(Z缓冲)
     glEnable(GL_DEPTH_TEST);
+    // 启用多重采样
+    glEnable(GL_MULTISAMPLE);
 
     glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -181,6 +192,12 @@ int main() {
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f,
                                             100.0f);
     while (!glfwWindowShouldClose(window)) {
+        float currentTime = (float) glfwGetTime();
+        // 获取上一帧绘制时间
+        deltaTime = currentTime - lastFrame;
+        // 设置最后一帧开始绘制的时间
+        lastFrame = currentTime;
+
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -231,35 +248,40 @@ int main() {
 
 void processInput(GLFWwindow *window) {
     // 相机移动速度
-    float cameraSpeed = 0.05f;
+    // 乘上增量时间使得移动更加平滑
+    float cameraSpeed = 2.5f * deltaTime;
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
-    } else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         // 相机前进
         // 相机位置直接加上前进向量
         cameraPos += cameraSpeed * cameraFront;
-    } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         // 相机后退
         // 和上面相反，所以直接减就行了
         cameraPos -= cameraSpeed * cameraFront;
-    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         // 相机向左移动
         // 先通过叉乘创建右向量
         // 再减去右向量达到向左移动的目的
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         // 相机向右移动
         // 同上
         // 只不过向右移动直接加上就行了
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     }
-    // 可能前后左右移动同时上下移动
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         // 相机向上移动
         // 直接加上上向量就行了
         cameraPos += cameraSpeed * cameraUp;
-    } else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         // 相机向下移动
         // 和上面相反,直接减去
         cameraPos -= cameraSpeed * cameraUp;
