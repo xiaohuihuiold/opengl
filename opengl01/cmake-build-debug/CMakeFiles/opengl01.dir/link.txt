@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/opengl01.dir/main.cpp.o  -o opengl01 -lglut -lGL -lGLU -lm 
