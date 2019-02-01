@@ -41,9 +41,13 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     const char *fragmentSource = fragmentStr.c_str();
 
     GLuint vertexShader;
+    // 创建着色器
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    // 设置源
     glShaderSource(vertexShader, 1, &vertexSource, nullptr);
+    // 编译着色器
     glCompileShader(vertexShader);
+    // 检查编译错误
     checkCompileError(vertexShader);
 
     GLuint fragmentShader;
@@ -52,12 +56,18 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glCompileShader(fragmentShader);
     checkCompileError(fragmentShader);
 
+    // 创建着色器程序
     ID = glCreateProgram();
+    // 添加顶点着色器
     glAttachShader(ID, vertexShader);
+    // 添加片元着色器
     glAttachShader(ID, fragmentShader);
+    // 链接程序
     glLinkProgram(ID);
+    // 检查链接错误
     checkLinkError(ID);
 
+    // 链接成功后删除着色器释放资源
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
@@ -69,8 +79,10 @@ void Shader::use() {
 void Shader::checkCompileError(GLuint shader) {
     int success;
     char infoLog[1024];
+    // 获取编译状态
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
+        // 获取信息
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         std::cout << "shader compile failed:" << infoLog << std::endl;
     }
@@ -79,8 +91,10 @@ void Shader::checkCompileError(GLuint shader) {
 void Shader::checkLinkError(GLuint program) {
     int success;
     char infoLog[1024];
+    // 获取链接状态
     glGetShaderiv(program, GL_LINK_STATUS, &success);
     if (!success) {
+        // 获取信息
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
         std::cout << "shader program link failed:" << infoLog << std::endl;
     }
