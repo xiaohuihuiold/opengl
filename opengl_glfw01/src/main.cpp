@@ -93,8 +93,11 @@ glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
 // 相机右轴与相机方向叉乘取得上轴
 glm::vec3 cameraUp = glm::cross(cameraRight, cameraDirection);*/
 
+// 相机位置
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+// 相机指向
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f);
+// 相机上轴？
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 // 增量时间
@@ -102,7 +105,19 @@ float deltaTime = 0.0f;
 // 最后一帧的时间
 float lastFrame = 0.0f;
 
+// 俯仰角
+float pitch = 0.0f;
+// 偏航角
+float yaw = 0.0f;
+// 鼠标是否是第一次移动
+bool isFirstMouse = true;
+// 记录鼠标偏移xy值
+double lastX = WINDOW_WIDTH / 2.0;
+double lastY = WINDOW_HEIGHT / 2.0;
+
 void processInput(GLFWwindow *);
+
+void mouseCallback(GLFWwindow *, double xpos, double ypos);
 
 void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 
@@ -123,6 +138,8 @@ int main() {
     glfwMakeContextCurrent(window);
     // 设置捕获光标
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // 设置鼠标回调
+    glfwSetCursorPosCallback(window, mouseCallback);
     // 窗口大小改变回调
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
@@ -286,6 +303,59 @@ void processInput(GLFWwindow *window) {
         // 和上面相反,直接减去
         cameraPos -= cameraSpeed * cameraUp;
     }
+}
+
+void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
+    // 灵敏度
+    float sensitivity = 0.1f;
+    if (isFirstMouse) {
+        // 如果是第一次调用，就先赋值
+        lastX = xpos;
+        lastY = ypos;
+        isFirstMouse = false;
+    }
+    // 鼠标xy偏移值，乘上灵敏度
+    double xoffset = (xpos - lastX) * sensitivity;
+    double yoffset = (lastY - ypos) * sensitivity;
+
+    // 记录本次鼠标的偏移值
+    lastX = static_cast<float>(xpos);
+    lastY = static_cast<float>(ypos);
+
+    // 根据鼠标xy运动方向进行变换角度
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // 限制俯仰角的角度
+    if (pitch > 89.0f) {
+        pitch = 89.0f;
+    }
+    if (pitch < -89.0f) {
+        pitch = -89.0f;
+    }
+
+    // 设置新的相机朝向
+    glm::vec3 front;
+
+    //    俯仰角计算                  偏航角计算
+    //        y                         z
+    //        |     /                   |     /
+    //        |    /|                   |    /|
+    //        |   / |                   |   / |
+    //        |  /  | sin(pitch)        |  /  | sin(yaw)
+    //        | /   |                   | /   |
+    //        |/)pit|                   |/)yaw|
+    // ----------------- x/z     ----------------- x
+    //        |   cos(pitch)            |   cos(yaw)
+    //        |                         |
+    //        |                         |
+    //        |                         |
+    front.x = glm::cos(glm::radians(pitch)) * glm::cos(glm::radians(yaw));
+    front.y = glm::sin(glm::radians(pitch));
+    front.z = glm::cos(glm::radians(pitch)) * glm::sin(glm::radians(yaw));
+
+    // 转换为单位向量
+    cameraFront = glm::normalize(front);
 }
 
 void framebufferSizeCallback(GLFWwindow *window, int width, int height) {
