@@ -5,17 +5,14 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define WINDOW_TITLE "OpenGL Light"
 
 int WINDOW_WIDTH = 1200;
 int WINDOW_HEIGHT = 720;
-
-void onKeyInput(GLFWwindow *);
-
-void onMouseCallback(GLFWwindow *, double, double);
-
-void onFramebufferSizeCallback(GLFWwindow *, int, int);
 
 GLfloat vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -25,6 +22,31 @@ GLfloat vertices[] = {
         -0.5f, 0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f,
 };
+
+// 相机位置
+glm::vec3 cameraPos;
+// 相机朝向
+glm::vec3 cameraFront;
+
+// 相机俯仰角
+float pitch = 0.0f;
+// 相机偏航角
+float yaw = -90.0f;
+
+// 增量时间
+float deltaTime = 1.0f;
+float lastTime = 0.0f;
+
+// 记录鼠标位置
+bool isFirstMouse = true;
+float lastX = (float) WINDOW_WIDTH / 2.0f;
+float lastY = (float) WINDOW_HEIGHT / 2.0f;
+
+void onKeyInput(GLFWwindow *);
+
+void onMouseCallback(GLFWwindow *, double, double);
+
+void onFramebufferSizeCallback(GLFWwindow *, int, int);
 
 int main() {
     glfwInit();
@@ -186,10 +208,40 @@ int main() {
     // 启用下标0的顶点数组参数
     glEnableVertexAttribArray(0);
 
+    // 查找着色器里面变量地址
+    GLint modelLoc = glGetUniformLocation(shaderProgram, "modelMatrix");
+    GLint viewLoc = glGetUniformLocation(shaderProgram, "viewMatrix");
+    GLint projLoc = glGetUniformLocation(shaderProgram, "projMatrix");
+
+    // 初始化相机位置以及朝向
+    cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+    // 模型矩阵
+    glm::mat4 model = glm::mat4(1.0f);
+    // 视图矩阵
+    // cameraPos：相机位置
+    // cameraPos+cameraFront：观察目标
+    // vec3：世界上向量
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+    // 透视投影
+    // 45.0f：fov 视野，转换为弧度制
+    // 宽高比，使得物体不会变形
+    // 0.1f：平截头近平面
+    // 100.0f：平截头远平面
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
+
     // 检查是否被要求退出
     while (!glfwWindowShouldClose(window)) {
+        // 计算上一祯绘制时间
+        deltaTime = (float) glfwGetTime() - lastTime;
+        lastTime = (float) glfwGetTime();
+
         // 每帧开始处理键盘输入
         onKeyInput(window);
+
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+        proj = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         // 清除颜色缓冲，清除深度缓冲
@@ -197,6 +249,12 @@ int main() {
 
         // 使用着色器程序
         glUseProgram(shaderProgram);
+
+        // 把模型，观察，投影矩阵传递到着色器
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
         // 绑定顶点数组
         glBindVertexArray(VAO);
         // 绘制三角形数组
@@ -217,16 +275,104 @@ int main() {
 }
 
 void onMouseCallback(GLFWwindow *window, double xpos, double ypos) {
+    // 灵敏度 不要太大
+    float sensitivity = 0.1f;
+
+    // 第一次移动鼠标赋值
+    if (isFirstMouse) {
+        lastX = (float) xpos;
+        lastY = (float) ypos;
+        isFirstMouse = false;
+    }
+
+    // 计算相对于上一次的偏移
+    // y需要反向，因为鼠标和gl坐标相反
+    float xoffset = (float) xpos - lastX;
+    float yoffset = lastY - (float) ypos;
+
+    // 更新鼠标位置
+    lastX = (float) xpos;
+    lastY = (float) ypos;
+
+    // 乘上灵敏度
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    // 改变偏航角和俯仰角
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // 限制俯仰角角度
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    // 计算新的方向
+    // 注意弧度制
+    //    俯仰角计算                  偏航角计算
+    //        y                         z
+    //        |     /                   |     /
+    //        |    /|                   |    /|
+    //        |   / |                   |   / |
+    //        |  /  | sin(pitch)        |  /  | sin(yaw)
+    //        | /   |                   | /   |
+    //        |/)pit|                   |/)yaw|
+    // ----------------- x/z     ----------------- x
+    //        |   cos(pitch)            |   cos(yaw)
+    //        |                         |
+    //        |                         |
+    //        |                         |
+    glm::vec3 front;
+    front.x = glm::cos(glm::radians(pitch)) * glm::cos(glm::radians(yaw));
+    front.y = glm::sin(glm::radians(pitch));
+    front.z = glm::cos(glm::radians(pitch)) * glm::sin(glm::radians(yaw));
+    // 赋值单位向量后的方向
+    cameraFront = glm::normalize(front);
 
 }
 
 void onKeyInput(GLFWwindow *window) {
+    float cameraSpeed = 2.5f * deltaTime;
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+
+    // 前进后退
+    // 加减方向向量
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        cameraPos += cameraSpeed * cameraFront;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        cameraPos -= cameraSpeed * cameraFront;
+    }
+
+    // 左右移动
+    // 先求右向量，叉乘求得右向量，然后转单位向量
+    // 加减右向量
+    glm::vec3 right = glm::normalize(glm::cross(cameraFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+    right *= cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos -= right;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos += right;
+    }
+
+    // 上下移动
+    // 直接加减世界上向量
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        cameraPos += glm::vec3(0.0f, 1.0f, 0.0f) * cameraSpeed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cameraPos -= glm::vec3(0.0f, 1.0f, 0.0f) * cameraSpeed;
     }
 }
 
 void onFramebufferSizeCallback(GLFWwindow *window, int width, int height) {
     // GL坐标转换屏幕坐标设置的视口
     glViewport(0, 0, width, height);
+    WINDOW_WIDTH = width;
+    WINDOW_HEIGHT = height;
 }

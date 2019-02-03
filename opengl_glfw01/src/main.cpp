@@ -96,7 +96,7 @@ glm::vec3 cameraUp = glm::cross(cameraRight, cameraDirection);*/
 // 相机位置
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 // 相机指向
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 // 相机上轴？
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
