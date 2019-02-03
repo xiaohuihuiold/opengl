@@ -1,5 +1,7 @@
 # opengl_glfw01
   跟随LearnOpenGL CN入门篇写的程序
+  ![opengl01.png](screenshots/opengl01.png)
+  ![opengl02.png](screenshots/opengl02.png)
   
 ## 笔记
   * glm::normalize

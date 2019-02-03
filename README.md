@@ -6,5 +6,4 @@
   2. 基本的摄像机移动(上下左右前后)
   3. 鼠标改变视角
 
-
-
+* [opengl_glfw02](opengl_glfw02)：对应[LearnOpenGL CN——光照](https://learnopengl-cn.github.io/02%20Lighting/01%20Colors/)内容所写程序
