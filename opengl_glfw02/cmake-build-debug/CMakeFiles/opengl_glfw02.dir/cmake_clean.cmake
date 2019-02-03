@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/opengl_glfw02.dir/src/main.cpp.o"
   "CMakeFiles/opengl_glfw02.dir/src/stb_image.cpp.o"
+  "CMakeFiles/opengl_glfw02.dir/src/Shader.cpp.o"
   "opengl_glfw02.pdb"
   "opengl_glfw02"
 )

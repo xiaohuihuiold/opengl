@@ -1414,6 +1414,20 @@ detail/setup.hpp
 detail/func_vector_relational.inl
 .././include/glm/detail/func_vector_relational.inl
 
+/home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.h
+iostream
+-
+string
+-
+fstream
+-
+sstream
+-
+glad/glad.h
+-
+glm/gtc/type_ptr.hpp
+-
+
 /home/xhh/CLionProjects/opengl/opengl_glfw02/src/main.cpp
 iostream
 -
@@ -1433,4 +1447,6 @@ glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
 -
+Shader.h
+/home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.h
 

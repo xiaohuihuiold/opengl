@@ -130,6 +130,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.cpp">
+			<Option target="opengl_glfw02"/>
+		</Unit>
+		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.h">
+			<Option target="opengl_glfw02"/>
+		</Unit>
 		<Unit filename="/home/xhh/CLionProjects/opengl/opengl_glfw02/src/glad/glad.c">
 			<Option target="glad"/>
 		</Unit>

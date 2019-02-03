@@ -136,6 +136,33 @@ opengl_glfw02/fast:
 	$(MAKE) -f CMakeFiles/opengl_glfw02.dir/build.make CMakeFiles/opengl_glfw02.dir/build
 .PHONY : opengl_glfw02/fast
 
+src/Shader.o: src/Shader.cpp.o
+
+.PHONY : src/Shader.o
+
+# target to build an object file
+src/Shader.cpp.o:
+	$(MAKE) -f CMakeFiles/opengl_glfw02.dir/build.make CMakeFiles/opengl_glfw02.dir/src/Shader.cpp.o
+.PHONY : src/Shader.cpp.o
+
+src/Shader.i: src/Shader.cpp.i
+
+.PHONY : src/Shader.i
+
+# target to preprocess a source file
+src/Shader.cpp.i:
+	$(MAKE) -f CMakeFiles/opengl_glfw02.dir/build.make CMakeFiles/opengl_glfw02.dir/src/Shader.cpp.i
+.PHONY : src/Shader.cpp.i
+
+src/Shader.s: src/Shader.cpp.s
+
+.PHONY : src/Shader.s
+
+# target to generate assembly for a file
+src/Shader.cpp.s:
+	$(MAKE) -f CMakeFiles/opengl_glfw02.dir/build.make CMakeFiles/opengl_glfw02.dir/src/Shader.cpp.s
+.PHONY : src/Shader.cpp.s
+
 src/glad/glad.o: src/glad/glad.c.o
 
 .PHONY : src/glad/glad.o
@@ -227,6 +254,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... glad"
 	@echo "... opengl_glfw02"
+	@echo "... src/Shader.o"
+	@echo "... src/Shader.i"
+	@echo "... src/Shader.s"
 	@echo "... src/glad/glad.o"
 	@echo "... src/glad/glad.i"
 	@echo "... src/glad/glad.s"

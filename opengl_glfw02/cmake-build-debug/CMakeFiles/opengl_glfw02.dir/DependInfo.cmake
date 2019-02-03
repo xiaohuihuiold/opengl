@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/src/Shader.cpp.o"
   "/home/xhh/CLionProjects/opengl/opengl_glfw02/src/main.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/src/main.cpp.o"
   "/home/xhh/CLionProjects/opengl/opengl_glfw02/src/stb_image.cpp" "/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/src/stb_image.cpp.o"
   )
