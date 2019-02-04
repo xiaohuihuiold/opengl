@@ -202,24 +202,37 @@ int main() {
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         proj = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         // 清除颜色缓冲，清除深度缓冲
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glm::mat4 model = glm::mat4(1.0f);
-        lightingShader.use();
-        // 设置光照属性
-        lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("objectColor", 1.0f, 0.2f, 0.2f);
-        lightingShader.setVec3("lightPos", lightPos);
-        lightingShader.setMat4("modelMatrix", model);
-        lightingShader.setMat4("viewMatrix", view);
-        lightingShader.setMat4("projMatrix", proj);
-        // 绑定顶点数组
-        glBindVertexArray(cubeVAO);
-        // 绘制三角形数组
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        float radius = 1.5f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+        lightPos = glm::vec3(camX, camX, camZ);
 
+        for (int i = 0; i < 10; i += 2) {
+            for (int j = 0; j < 10; j += 2) {
+                for (int k = 0; k < 10; k += 2) {
+                    glm::mat4 cubeModel = glm::mat4(1.0f);
+                    cubeModel = glm::translate(cubeModel, glm::vec3(i, j, k));
+                    lightingShader.use();
+                    // 设置光照属性
+                    lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+                    lightingShader.setVec3("objectColor", 1.0f, 0.2f, 0.2f);
+                    lightingShader.setVec3("lightPos", lightPos);
+                    lightingShader.setMat4("modelMatrix", cubeModel);
+                    lightingShader.setMat4("viewMatrix", view);
+                    lightingShader.setMat4("projMatrix", proj);
+                    // 绑定顶点数组
+                    glBindVertexArray(cubeVAO);
+                    // 绘制三角形数组
+                    glDrawArrays(GL_TRIANGLES, 0, 36);
+                }
+            }
+        }
+
+        glm::mat4 model = glm::mat4(1.0f);
         // 使用着色器程序
         lampShader.use();
         // 把模型，观察，投影矩阵传递到着色器
