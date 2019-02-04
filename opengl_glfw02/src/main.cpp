@@ -16,53 +16,56 @@ int WINDOW_WIDTH = 1200;
 int WINDOW_HEIGHT = 720;
 
 GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f, 0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
 
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
 
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
 };
 
 // 相机位置
 glm::vec3 cameraPos;
 // 相机朝向
 glm::vec3 cameraFront;
+
+// 光源位置
+glm::vec3 lightPos;
 
 // 相机俯仰角
 float pitch = 0.0f;
@@ -123,8 +126,10 @@ int main() {
     // 启用多重采样
     glEnable(GL_MULTISAMPLE);
 
-    Shader cubeShader("../assets/cube_vertex.glsl", "../assets/cube_fragment.glsl");
-    Shader lightShader("../assets/light_vertex.glsl", "../assets/light_fragment.glsl");
+    // 光源着色器
+    Shader lampShader("../assets/lamp_vertex.glsl", "../assets/lamp_fragment.glsl");
+    // 光照着色器
+    Shader lightingShader("../assets/lighting_vertex.glsl", "../assets/lighting_fragment.glsl");
 
     // 生成顶点数组对象,顶点缓冲对象
     GLuint VBO;
@@ -148,22 +153,29 @@ int main() {
     // GL_FLOAT：指定数据类型
     // GL_FALSE：是否标准化
     // 3*sizeof(float)：下一个元素需要跳过的步长
-    // (void*)0：数据偏移
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
+    // (void*)0：数据偏移(字节)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
     // 启用下标0的顶点数组参数
     glEnableVertexAttribArray(0);
+    // 传递立方体顶点法向量
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // 生成光照顶点数组对象
     GLuint lightVAO;
     glGenVertexArrays(1, &lightVAO);
     glBindVertexArray(lightVAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
+    // 传递立方体顶点坐标
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
 
     // 初始化相机位置以及朝向
     cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+    // 初始化光照位置
+    lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
     // 视图矩阵
     // cameraPos：相机位置
@@ -186,6 +198,7 @@ int main() {
         // 每帧开始处理键盘输入
         onKeyInput(window);
 
+        // 更新视图和投影
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         proj = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
 
@@ -194,29 +207,30 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 model = glm::mat4(1.0f);
-        lightShader.use();
-        // 设置光照颜色
-        lightShader.setVec3("lightColor", 1.0f, 0.5f, 0.31f);
-        lightShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
-        lightShader.setMat4("modelMatrix", model);
-        lightShader.setMat4("viewMatrix", view);
-        lightShader.setMat4("projMatrix", proj);
+        lightingShader.use();
+        // 设置光照属性
+        lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("objectColor", 1.0f, 0.2f, 0.2f);
+        lightingShader.setVec3("lightPos", lightPos);
+        lightingShader.setMat4("modelMatrix", model);
+        lightingShader.setMat4("viewMatrix", view);
+        lightingShader.setMat4("projMatrix", proj);
         // 绑定顶点数组
-        glBindVertexArray(lightVAO);
+        glBindVertexArray(cubeVAO);
         // 绘制三角形数组
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // 使用着色器程序
-        cubeShader.use();
+        lampShader.use();
         // 把模型，观察，投影矩阵传递到着色器
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(1.2f, 1.0f, 2.0f));
+        model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f));
-        cubeShader.setMat4("modelMatrix", model);
-        cubeShader.setMat4("viewMatrix", view);
-        cubeShader.setMat4("projMatrix", proj);
+        lampShader.setMat4("modelMatrix", model);
+        lampShader.setMat4("viewMatrix", view);
+        lampShader.setMat4("projMatrix", proj);
         // 绑定顶点数组
-        glBindVertexArray(cubeVAO);
+        glBindVertexArray(lightVAO);
         // 绘制三角形数组
         glDrawArrays(GL_TRIANGLES, 0, 36);
 

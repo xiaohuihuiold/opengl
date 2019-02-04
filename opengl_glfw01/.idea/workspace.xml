@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="opengl_glfw01" targetName="opengl_glfw01" />
       <config projectName="opengl_glfw01" targetName="glad" />
+      <config projectName="opengl_glfw01" targetName="opengl_glfw01" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -14,17 +14,17 @@
   <component name="ChangeListManager">
     <list default="true" id="914b7733-8956-4e86-bb30-ea151cb4b19e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/opengl_glfw01.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/opengl_glfw01.dir/src/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/opengl_glfw01" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/opengl_glfw01" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/.idea/dictionaries/xhh.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/.idea/dictionaries/xhh.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../opengl_glfw02/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/assets/vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/assets/vertex.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/assets/cube_fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/assets/lamp_fragment.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/assets/cube_vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/assets/lamp_vertex.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/assets/light_fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/assets/lighting_fragment.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/assets/light_vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/assets/lighting_vertex.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir/src/main.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/opengl_glfw02" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/cmake-build-debug/opengl_glfw02" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/src/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/src/Shader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../opengl_glfw02/src/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/src/Shader.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../opengl_glfw02/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../opengl_glfw02/src/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -51,10 +51,10 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
+            <state relative-caret-position="5695">
               <caret line="335" column="19" selection-start-line="335" selection-start-column="19" selection-end-line="335" selection-end-column="19" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
@@ -75,11 +75,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/shader/Shader.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1071">
-              <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+            <state relative-caret-position="777">
+              <caret line="125" selection-start-line="10" selection-end-line="125" />
               <folding>
                 <element signature="e#36#55#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/shader/Shader.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="12" selection-start-line="8" selection-end-line="8" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="255">
+                <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -114,8 +135,8 @@
         <option value="$PROJECT_DIR$/src/shader/Shader.h" />
         <option value="$PROJECT_DIR$/src/shader/Shader.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -259,7 +280,9 @@
       <workItem from="1548991773384" duration="599000" />
       <workItem from="1549005017337" duration="8750000" />
       <workItem from="1549068127444" duration="11252000" />
-      <workItem from="1549166780122" duration="13540000" />
+      <workItem from="1549166780122" duration="13659000" />
+      <workItem from="1549206719387" duration="1015000" />
+      <workItem from="1549295219257" duration="1014000" />
     </task>
     <task id="LOCAL-00001" summary="添加36个定点&#10;添加model，view，projection矩阵&#10;添加深度缓冲">
       <created>1548855663820</created>
@@ -300,13 +323,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98007000" />
+    <option name="totallyTimeSpent" value="100155000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="30" width="1924" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11661342" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.118743345" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -321,7 +344,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.3297414" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.32497275" />
-      <window_info active="true" anchor="bottom" id="Run" order="12" visible="true" weight="0.1724138" />
+      <window_info anchor="bottom" id="Run" order="12" weight="0.1724138" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -422,13 +445,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shader/Shader.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/include/GLFW/glfw3.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -457,22 +473,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="17">
-            <caret line="1" column="25" lean-forward="true" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/shader/Shader.cpp">
+    <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1071">
-          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+        <state relative-caret-position="5695">
+          <caret line="335" column="19" selection-start-line="335" selection-start-column="19" selection-end-line="335" selection-end-column="19" />
           <folding>
-            <element signature="e#36#55#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -484,13 +490,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.cpp">
+    <entry file="file://$PROJECT_DIR$/src/shader/Shader.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="335" column="19" selection-start-line="335" selection-start-column="19" selection-end-line="335" selection-end-column="19" />
+        <state relative-caret-position="136">
+          <caret line="8" column="12" selection-start-line="8" selection-end-line="8" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shader/Shader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="777">
+          <caret line="125" selection-start-line="10" selection-end-line="125" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#36#55#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="255">
+            <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

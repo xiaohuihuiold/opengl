@@ -26,6 +26,8 @@ public:
 
     void setVec3(const std::string &name, GLfloat v0, GLfloat v1, GLfloat v2);
 
+    void setVec3(const std::string &name, const glm::vec3 &vec3);
+
     void setVec2(const std::string &name, GLfloat v0, GLfloat v1);
 
     void setBool(const std::string &name, bool value);
