@@ -5,5 +5,8 @@
   1. 基本的场景、摄像机、物体、纹理
   2. 基本的摄像机移动(上下左右前后)
   3. 鼠标改变视角
-
 * [opengl_glfw02](opengl_glfw02)：对应[LearnOpenGL CN——光照](https://learnopengl-cn.github.io/02%20Lighting/01%20Colors/)内容所写程序
+  1. 添加冯氏光照模型
+     * 环境光照
+     * 漫反射
+     * 镜面反射
