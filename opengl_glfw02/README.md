@@ -14,7 +14,10 @@
       ```
   * 漫反射
     * 给顶点添加法向量
-    * 获得片段在世界中的位置
+    * 获得片段在世界中的位置 (顶点着色器)
+      ```c
+        FragPos = vec3(modelMatrix * vec4(aPos ,1.0));
+      ```
     * 根据片段和光源位置计算向量差
       ```c
       vec3 lightDir = normalize(lightPos - FragPos);
@@ -27,8 +30,26 @@
       ```c
         vec3 diffuse = diff * lightColor;
       ```
-  * 最终颜色
-    * 环境光照加上漫反射的值乘上物体颜色
+  * 镜面反射
+    * 定义镜面反射强度
+    * 计算视线向量
       ```c
-        vec3 result = (diffuse + ambient) * objectColor;
+        vec3 viewDir = normalize(viewPos - FragPos);
+      ```
+    * 计算反射光向量
+      ```c
+        vec3 reflectDir = reflect(-lightDir , norm);
+      ```
+    * 计算视线位置和反射位置的点乘，再定义反光度(32)
+      ```c
+        float spec = pow(max(dot(viewDir,reflectDir),0.0),32);
+      ```
+    * 根据反射强度，反光度，光照颜色计算镜面分量
+      ```c
+        vec3 specular = specularStrangrh * spec * lightColor;
+      ```
+  * 最终颜色
+    * 环境光照加上漫反射和镜面反射的分量乘上物体颜色
+      ```c
+        vec3 result = (diffuse + ambient + specular) * objectColor;
       ```

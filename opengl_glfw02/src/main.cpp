@@ -202,7 +202,7 @@ int main() {
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         proj = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.6f, 1.0f);
         // 清除颜色缓冲，清除深度缓冲
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -221,6 +221,7 @@ int main() {
                     lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
                     lightingShader.setVec3("objectColor", 1.0f, 0.2f, 0.2f);
                     lightingShader.setVec3("lightPos", lightPos);
+                    lightingShader.setVec3("viewPos", cameraPos);
                     lightingShader.setMat4("modelMatrix", cubeModel);
                     lightingShader.setMat4("viewMatrix", view);
                     lightingShader.setMat4("projMatrix", proj);
