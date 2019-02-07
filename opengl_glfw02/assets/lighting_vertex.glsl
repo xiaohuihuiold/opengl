@@ -2,10 +2,13 @@
 layout (location = 0) in vec3 aPos;
 // 顶点法向量
 layout (location = 1) in vec3 aNormal;
+// 材质坐标
+layout (location = 2) in vec2 aTexCoords;
 
 out vec3 Normal;
 // 片段位置
 out vec3 FragPos;
+out vec2 TexCoords;
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
@@ -17,4 +20,5 @@ void main() {
     // 所以只需要乘上模型矩阵
     FragPos = vec3(modelMatrix * vec4(aPos ,1.0));
     Normal = aNormal;
+    TexCoords = aTexCoords;
 }

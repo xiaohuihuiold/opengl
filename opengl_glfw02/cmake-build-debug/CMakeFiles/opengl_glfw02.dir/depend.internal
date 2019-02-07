@@ -403,6 +403,7 @@ CMakeFiles/opengl_glfw02.dir/src/main.cpp.o
  .././include/glm/vector_relational.hpp
  /home/xhh/CLionProjects/opengl/opengl_glfw02/src/Shader.h
  /home/xhh/CLionProjects/opengl/opengl_glfw02/src/main.cpp
+ /home/xhh/CLionProjects/opengl/opengl_glfw02/src/stb_image.h
 CMakeFiles/opengl_glfw02.dir/src/stb_image.cpp.o
  /home/xhh/CLionProjects/opengl/opengl_glfw02/src/stb_image.cpp
  /home/xhh/CLionProjects/opengl/opengl_glfw02/src/stb_image.h

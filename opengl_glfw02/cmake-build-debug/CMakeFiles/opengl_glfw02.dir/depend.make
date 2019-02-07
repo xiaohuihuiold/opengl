@@ -402,6 +402,7 @@ CMakeFiles/opengl_glfw02.dir/src/main.cpp.o: .././include/glm/vec4.hpp
 CMakeFiles/opengl_glfw02.dir/src/main.cpp.o: .././include/glm/vector_relational.hpp
 CMakeFiles/opengl_glfw02.dir/src/main.cpp.o: ../src/Shader.h
 CMakeFiles/opengl_glfw02.dir/src/main.cpp.o: ../src/main.cpp
+CMakeFiles/opengl_glfw02.dir/src/main.cpp.o: ../src/stb_image.h
 
 CMakeFiles/opengl_glfw02.dir/src/stb_image.cpp.o: ../src/stb_image.cpp
 CMakeFiles/opengl_glfw02.dir/src/stb_image.cpp.o: ../src/stb_image.h

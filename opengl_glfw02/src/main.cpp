@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "stb_image.h"
 #include "Shader.h"
 
 #define WINDOW_TITLE "OpenGL Light"
@@ -16,47 +17,47 @@ int WINDOW_WIDTH = 1200;
 int WINDOW_HEIGHT = 720;
 
 GLfloat vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
 };
 
 // 相机位置
@@ -80,6 +81,8 @@ float lastTime = 0.0f;
 bool isFirstMouse = true;
 float lastX = (float) WINDOW_WIDTH / 2.0f;
 float lastY = (float) WINDOW_HEIGHT / 2.0f;
+
+GLuint loadTexture(const char *);
 
 void onKeyInput(GLFWwindow *);
 
@@ -154,12 +157,15 @@ int main() {
     // GL_FALSE：是否标准化
     // 3*sizeof(float)：下一个元素需要跳过的步长
     // (void*)0：数据偏移(字节)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
     // 启用下标0的顶点数组参数
     glEnableVertexAttribArray(0);
     // 传递立方体顶点法向量
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    // 传递材质坐标
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     // 生成光照顶点数组对象
     GLuint lightVAO;
@@ -167,8 +173,11 @@ int main() {
     glBindVertexArray(lightVAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     // 传递立方体顶点坐标
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
+
+    GLuint diffuseMap = loadTexture("../assets/container2.png");
+    GLuint specularMap = loadTexture("../assets/container2_specular.png");
 
     // 初始化相机位置以及朝向
     cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -205,7 +214,6 @@ int main() {
         glClearColor(0.5f, 0.5f, 0.6f, 1.0f);
         // 清除颜色缓冲，清除深度缓冲
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         /*   float radius = 1.5f;
            float camX = sin(glfwGetTime()) * radius;
            float camZ = cos(glfwGetTime()) * radius;
@@ -217,21 +225,29 @@ int main() {
         lightingShader.setMat4("viewMatrix", view);
         lightingShader.setMat4("projMatrix", proj);
         // 设置光照属性
-        lightingShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        lightingShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-        lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        lightingShader.setInt("material.diffuse", 0);
+        lightingShader.setInt("material.specular", 1);
         lightingShader.setFloat("material.shininess", 32.0f);
         lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         lightingShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
         lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        // 设置光源强度
+        lightingShader.setFloat("light.constant", 1.0f);
+        lightingShader.setFloat("light.linear", 0.09f);
+        lightingShader.setFloat("light.quadratic", 0.032f);
+        // 绑定顶点数组
+        glBindVertexArray(cubeVAO);
+        // 激活绑定纹理
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specularMap);
         for (int i = 0; i < 10; i += 2) {
             for (int j = 0; j < 10; j += 2) {
                 for (int k = 0; k < 10; k += 2) {
                     glm::mat4 cubeModel = glm::mat4(1.0f);
                     cubeModel = glm::translate(cubeModel, glm::vec3(i, j, k));
                     lightingShader.setMat4("modelMatrix", cubeModel);
-                    // 绑定顶点数组
-                    glBindVertexArray(cubeVAO);
                     // 绘制三角形数组
                     glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
@@ -369,4 +385,40 @@ void onFramebufferSizeCallback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
     WINDOW_WIDTH = width;
     WINDOW_HEIGHT = height;
+}
+
+GLuint loadTexture(const char *path) {
+    GLuint texture;
+    // 生成材质
+    glGenTextures(1, &texture);
+    // 绑定材质
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // 加载并生成纹理
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
+    if (data) {
+        GLenum format;
+        if (nrChannels == 1)
+            format = GL_RED;
+        else if (nrChannels == 3)
+            format = GL_RGB;
+        else if (nrChannels == 4)
+            format = GL_RGBA;
+        // 生成纹理
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        // 生成mipmap
+        glGenerateMipmap(GL_TEXTURE_2D);
+        // 设置环绕方式 重复
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // 设置过滤方式 线性
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // 释放资源
+        stbi_image_free(data);
+    } else {
+        std::cout << "材质加载失败" << std::endl;
+    }
+    return texture;
 }
