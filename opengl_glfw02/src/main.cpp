@@ -221,7 +221,6 @@ int main() {
 
         lightingShader.use();
         lightingShader.setVec3("viewPos", cameraPos);
-        lightingShader.setVec3("light.position", lightPos);
         lightingShader.setMat4("viewMatrix", view);
         lightingShader.setMat4("projMatrix", proj);
         // 设置光照属性
@@ -235,6 +234,11 @@ int main() {
         lightingShader.setFloat("light.constant", 1.0f);
         lightingShader.setFloat("light.linear", 0.09f);
         lightingShader.setFloat("light.quadratic", 0.032f);
+        // 手电筒效果
+        lightingShader.setVec3("light.position", cameraPos);
+        lightingShader.setVec3("light.direction", cameraFront);
+        lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+        lightingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
         // 绑定顶点数组
         glBindVertexArray(cubeVAO);
         // 激活绑定纹理

@@ -75,3 +75,27 @@
         | 325    | 1.0    | 0.014  | 0.0007   |
         | 600    | 1.0    | 0.007  | 0.0002   |
         | 3250   | 1.0    |	0.0014 | 0.000007 |
+  * 聚光
+    * 指定一个切光角，在这之外的不会被照亮
+    * 指定点光源向量
+    * 使用dot计算点光源(取负值并标准化，片段到光源的位置)和片段到光源的点积
+    * 上一步的点积和切光角进行比较，由于是余弦值，使用是>切光角
+    * 大于就执行光照计算，小于就只和环境光做计算
+      ```c
+         FragColor = vec4(light.ambient * texture(material.diffuse,TexCoords).rgb,1.0);
+      ```
+  * 平滑/软化边缘
+    * 设置两个圆锥
+    * 内圆锥到外圆锥平滑
+    * 平滑公式
+      > 聚光强度 = (片段和光源的夹角-外圆锥余弦值)/内外圆锥余弦值差
+      
+      ```c
+        // 获取光照方向和片段方向的余弦值
+        // 取反是需要指向光源
+        float theta = dot(lightDir,normalize(-light.direction));
+        // 内外圆锥余弦值差
+        float epsilon = light.cutOff - light.outerCutOff;
+        // 聚光强度 = (片段和光源的夹角-外圆锥余弦值)/内外圆锥余弦值差
+        float intensity = clamp((theta - light.outerCutOff)/epsilon ,0.0 ,1.0); 
+      ```
