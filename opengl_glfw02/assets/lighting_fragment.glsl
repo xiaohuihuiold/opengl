@@ -1,4 +1,6 @@
 #version 330 core
+
+#define NR_POINT_LIGHTS 4
 // 材质结构体
 struct Material{
     // 漫反射颜色
@@ -9,24 +11,48 @@ struct Material{
     float shininess;
 };
 
-// 光照结构体
-struct Light{
-    // 光源位置
-    vec3 position;
+// 定向光
+struct DirLight{
     // 光照方向
     vec3 direction;
-    // 内光切
-    float cutOff;
-    // 外圆锥光切
-    float outerCutOff;
+    // 冯氏光照模型
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight{
+    // 光源位置
+    vec3 position;
+
+    // 衰减常数项
+    float constant;
+    // 衰减一次项
+    float linear;
+    // 衰减二次项
+    float quadrtic;
 
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+};
+
+struct SpotLight{
+    vec3 position;
+    vec3 direction;
+
+    // 内切角
+    float cutOff;
+    // 内切角(第二个圆锥)
+    float outerCutOff;
 
     float constant;
     float linear;
     float quadratic;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
 };
 
 // 顶点法向量
@@ -41,57 +67,96 @@ out vec4 FragColor;
 uniform vec3 viewPos;
 // 材质
 uniform Material material;
-// 光源
-uniform Light light;
+
+uniform DirLight dirLight;
+uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform SpotLight spotLight;
+
+vec3 calcDirLight(DirLight light,vec3 normal,vec3 viewDir);
+vec3 calcPointLight(PointLight light,vec3 normal,vec3 fragPos,vec3 viewDir);
+vec3 calcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir);
 
 void main() {
     // 标准化法向量
     vec3 norm = normalize(Normal);
+    // 视线方向，从片段到相机
+    vec3 viewDir=normalize(viewPos-FragPos);
 
-    // 获得光源和片段位置之间向量差，并标准化
-    vec3 lightDir = normalize(light.position - FragPos);
+    vec3 result = calcDirLight(dirLight,norm,viewDir);
+    for(int i=0;i<NR_POINT_LIGHTS;i++){
+        result +=calcPointLight(pointLights[i],norm,FragPos,viewDir);
+    }
+    result +=calcSpotLight(spotLight,norm,FragPos,viewDir);
 
-    // 获取光照方向和片段方向的余弦值
-    // 取反是需要指向光源
-    float theta = dot(lightDir,normalize(-light.direction));
-    // 内外圆锥余弦值差
-    float epsilon = light.cutOff - light.outerCutOff;
-    // 聚光强度 = (片段和光源的夹角-外圆锥余弦值)/内外圆锥余弦值差
-    float intensity = clamp((theta - light.outerCutOff)/epsilon ,0.0 ,1.0);
+    FragColor = vec4( result ,1.0);
+}
 
-    // 光源距离片段的距离
-    float distance = length(light.position - FragPos);
-    // 计算光的衰减
-    // 1.0/(常数项+一次项*距离+二次项*距离*距离)
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
-
-    // 计算环境光照分量
-    vec3 ambient = light.ambient * vec3(texture(material.diffuse,TexCoords));
-    // 求光源的影响，并不为负数
-    float diff = max(dot(norm ,lightDir) ,0.0);
-    // 计算漫反射分量
-    vec3 diffuse =light.diffuse * diff * vec3(texture(material.diffuse,TexCoords));
-
-    // 视线位置和片段位置向量差，得到视线方向向量
-    vec3 viewDir = normalize(viewPos - FragPos);
-    // 获取光照反射向量
-    // lightDir取反是因为求反射向量需要的是光源指向片段位置的向量
-    vec3 reflectDir = reflect(-lightDir , norm);
-    // max同漫反射,32是反光度
+vec3 calcDirLight(DirLight light,vec3 normal,vec3 viewDir){
+    // 变换光源照射方向为物体指向光源的方向
+    vec3 lightDir = normalize(-light.direction);
+    // 获取法线与光线的差，值越大光照越强
+    float diff = max(dot(normal,lightDir),0.0);
+    // 获取反射光照向量，需要的是光照方向
+    vec3 reflectDir = reflect(-lightDir,normal);
+    // 视线与光的反射值进行点乘求差值，并设置反光度
     float spec = pow(max(dot(viewDir,reflectDir),0.0),material.shininess);
-    // 根据反射强度，反光度，光照颜色计算镜面分量
+
+    // 环境光照，材质使用漫反射材质
+    vec3 ambient = light.ambient * vec3(texture(material.diffuse,TexCoords));
+    // 漫反射，使用漫反射材质
+    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse,TexCoords));
+    // 镜面反射，使用镜面反射材质
     vec3 specular = light.specular * spec * vec3(texture(material.specular,TexCoords));
 
-    // 计算光照衰减
-    diffuse *=attenuation;
-    specular *=attenuation;
+    // 构成冯氏光照模型
+    return ambient + diffuse + specular;
+}
 
-    // 平滑光
-    diffuse *=intensity;
-    specular *=intensity;
+vec3 calcPointLight(PointLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
+    // 取得到光源的向量
+    vec3 lightDir = normalize(light.position-fragPos);
 
-    // (环境光照(全局) + 模型漫反射) * 模型颜色
-    // 得到最终的颜色
-    vec3 result = diffuse + ambient + specular;
-    FragColor = vec4( result ,1.0);
+    float diff = max(dot(normal,lightDir),0.0);
+    vec3 reflectDir = reflect(-lightDir,normal);
+    float spec = pow(max(dot(viewDir,reflectDir),0.0),material.shininess);
+
+    // 计算片段到光源的位置
+    float distance = length(light.position-fragPos);
+    // 1.0/(常数项+一次项*距离+二次项*距离*距离)
+    float attenuation = 1.0/(light.constant+light.linear*distance+light.quadrtic*distance*distance);
+
+    vec3 ambient = light.ambient * vec3(texture(material.diffuse,TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse,TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture(material.specular,TexCoords));
+
+    // 加上光的距离衰减
+    return ambient + diffuse*attenuation + specular*attenuation;
+}
+
+vec3 calcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
+    vec3 lightDir = normalize(light.position-fragPos);
+
+    float diff = max(dot(normal,lightDir),0.0);
+    vec3 reflectDir = reflect(-lightDir,normal);
+    float spec = pow(max(dot(viewDir,reflectDir),0.0),material.shininess);
+
+    float distance = length(light.position-fragPos);
+    float attenuation = 1.0/(light.constant+light.linear*distance+light.quadratic*distance*distance);
+
+    // 计算片段与光照角度的余弦值
+    float theta = dot(lightDir,normalize(-light.direction));
+    // 内外余弦值差(cos(90)<cos(1))
+    float epsilon = light.cutOff-light.outerCutOff;
+    // 把聚光强度限制到0~1
+    // 聚光强度 = (片段和光源的夹角-外圆锥余弦值)/内外圆锥余弦值差
+    float intensity = clamp((theta-light.outerCutOff)/epsilon,0.0,1.1);
+
+    vec3 ambient = light.ambient * vec3(texture(material.diffuse,TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse,TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture(material.specular,TexCoords));
+
+    diffuse *=intensity*attenuation;
+    specular *=intensity*attenuation;
+
+    return ambient + diffuse + specular;
 }
