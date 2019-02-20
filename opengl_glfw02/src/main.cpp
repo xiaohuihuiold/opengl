@@ -65,9 +65,6 @@ glm::vec3 cameraPos;
 // 相机朝向
 glm::vec3 cameraFront;
 
-// 光源位置
-glm::vec3 lightPos;
-
 // 相机俯仰角
 float pitch = 0.0f;
 // 相机偏航角
@@ -182,9 +179,6 @@ int main() {
     // 初始化相机位置以及朝向
     cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-
-    // 初始化光照位置
-    lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
     // 视图矩阵
     // cameraPos：相机位置
@@ -307,7 +301,7 @@ int main() {
         // 绑定顶点数组
         glBindVertexArray(lightVAO);
         glm::mat4 model = glm::mat4(1.0f);
-        for (int i = 0; i < 4; i+=1) {
+        for (int i = 0; i < 4; i += 1) {
             // 把模型，观察，投影矩阵传递到着色器
             model = glm::mat4(1.0f);
             model = glm::translate(model, pointLightPositions[i]);
@@ -447,7 +441,7 @@ GLuint loadTexture(const char *path) {
     int width, height, nrChannels;
     unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
     if (data) {
-        GLenum format;
+        GLenum format = 3;
         if (nrChannels == 1)
             format = GL_RED;
         else if (nrChannels == 3)
