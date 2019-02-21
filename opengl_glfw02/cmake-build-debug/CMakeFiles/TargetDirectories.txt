@@ -1,4 +1,0 @@
-/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/glad.dir
-/home/xhh/CLionProjects/opengl/opengl_glfw02/cmake-build-debug/CMakeFiles/opengl_glfw02.dir
