@@ -7,8 +7,8 @@ set(PROJECT_INCLUDE ./include)
 
 include_directories(${PROJECT_INCLUDE})
 
-add_library(glad ./src/glad/glad.c)
-add_library(stb_image ./src/stb_image/stb_image.cpp)
+add_library(glad SHARED ./src/glad/glad.c)
+add_library(stb_image SHARED ./src/stb_image/stb_image.cpp)
 
 add_executable(opengl_glfw03 src/main.cpp)
 
