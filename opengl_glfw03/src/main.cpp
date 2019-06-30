@@ -31,7 +31,7 @@ int main() {
 
     // 初始化glad
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "glad初始化失败" << std::endl;
+        std::cout << "glad初始化失败!" << std::endl;
         glfwTerminate();
         return -1;
     }
