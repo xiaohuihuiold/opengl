@@ -1,3 +1,0 @@
-D:\JetBrains\Toolbox\apps\CLion\ch-0\193.4386.19\bin\cmake\win\bin\cmake.exe -E remove -f CMakeFiles\opengl_model.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\opengl_model.dir/objects.a @CMakeFiles\opengl_model.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\opengl_model.dir/objects.a -Wl,--no-whole-archive  -o opengl_model.exe -Wl,--out-implib,libopengl_model.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\opengl_model.dir\linklibs.rsp

@@ -1,5 +1,0 @@
-F:/git/opengl/opengl_model/cmake-build-debug/CMakeFiles/glad.dir
-F:/git/opengl/opengl_model/cmake-build-debug/CMakeFiles/stb_image.dir
-F:/git/opengl/opengl_model/cmake-build-debug/CMakeFiles/opengl_model.dir
-F:/git/opengl/opengl_model/cmake-build-debug/CMakeFiles/edit_cache.dir
-F:/git/opengl/opengl_model/cmake-build-debug/CMakeFiles/rebuild_cache.dir

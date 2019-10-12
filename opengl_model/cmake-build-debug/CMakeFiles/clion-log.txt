@@ -1,4 +1,0 @@
-D:\JetBrains\Toolbox\apps\CLion\ch-0\193.4386.19\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" F:\git\opengl\opengl_model
--- Configuring done
--- Generating done
--- Build files have been written to: F:/git/opengl/opengl_model/cmake-build-debug
