@@ -11,7 +11,13 @@ int WINDOW_HEIGHT = 720;
 GLfloat vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f
+        0.5f, 0.5f, 0.0f,
+        -0.5f, 0.5f, 0.0f
+};
+
+GLuint indices[] = {
+        0, 1, 2,
+        0, 2, 3
 };
 
 // 窗口大小改变的回调
@@ -64,13 +70,19 @@ int main(int argc, char **argv) {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // 创建顶点数组
+    // 创建顶点数组对象
     GLuint VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     // 链接顶点属性
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
+
+    // 创建索引缓冲对象
+    GLuint EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
@@ -83,7 +95,7 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // 交换缓冲以及检查事件
         glfwSwapBuffers(window);
@@ -92,6 +104,7 @@ int main(int argc, char **argv) {
 
     // 清理资源
     glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
     glfwTerminate();
     return 0;
