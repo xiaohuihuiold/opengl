@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <cstring>
 #include "Shader.h"
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath) {
@@ -13,6 +14,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     const char *vertexSource = loadGLSL(vertexPath);
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSource, nullptr);
+    delete vertexSource;
     glCompileShader(vertexShader);
     if (!checkCompileError(vertexShader)) {
         return;
@@ -22,6 +24,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     const char *fragmentSource = loadGLSL(fragmentPath);
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentSource, nullptr);
+    delete fragmentSource;
     glCompileShader(fragmentShader);
     if (!checkCompileError(fragmentShader)) {
         return;
@@ -59,7 +62,9 @@ const char *Shader::loadGLSL(const char *glslPath) {
     } catch (std::ifstream::failure &e) {
         perror(e.what());
     }
-    return glslStr.c_str();
+    char *str = new char[glslStr.length() + 1];
+    strcpy(str, glslStr.c_str());
+    return str;
 }
 
 bool Shader::checkCompileError(GLuint shader) {

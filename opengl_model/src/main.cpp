@@ -124,6 +124,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 void process_input(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         // 按下esc后设置应当关闭窗口
-        glfwSetWindowShouldClose(window, TRUE);
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 }
