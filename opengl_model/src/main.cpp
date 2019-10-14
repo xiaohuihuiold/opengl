@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader/Shader.h"
+#include "stb_image/stb_image.h"
 
 #define WINDOW_TITLE "Model"
 
@@ -9,10 +10,10 @@ int WINDOW_WIDTH = 1200;
 int WINDOW_HEIGHT = 720;
 
 GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
 };
 
 GLuint indices[] = {
@@ -26,6 +27,9 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 // 输入事件处理
 void process_input(GLFWwindow *window);
 
+// 图片加载
+GLuint loadImage(const char *path);
+
 int main(int argc, char **argv) {
     // 初始化glfw
     glfwInit();
@@ -37,6 +41,11 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     // 设置采样
     glfwWindowHint(GLFW_SAMPLES, 4);
+
+    // 如果是macos
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
+#endif
 
     // 创建窗口并设置上下文
     // monitor: 为空则是窗口模式
@@ -60,11 +69,16 @@ int main(int argc, char **argv) {
 
     // 启用多重采样
     glEnable(GL_MULTISAMPLE);
+    // 线框模式
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // 创建着色器
     Shader shader("../assets/shader/test_vertex.glsl", "../assets/shader/test_fragment.glsl");
 
-    // 创建顶点缓冲对象
+    // 加载并创建纹理
+    GLuint textureId = loadImage("../assets/images/wall.jpg");
+
+    // 创建顶点缓存对象
     GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -75,8 +89,11 @@ int main(int argc, char **argv) {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     // 链接顶点属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
+    // 链接纹理坐标
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
+    glEnableVertexAttribArray(1);
 
     // 创建索引缓冲对象
     GLuint EBO;
@@ -90,10 +107,12 @@ int main(int argc, char **argv) {
         process_input(window);
 
         shader.use();
+
         // 清除缓冲区
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glBindTexture(GL_TEXTURE_2D, textureId);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -126,4 +145,33 @@ void process_input(GLFWwindow *window) {
         // 按下esc后设置应当关闭窗口
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+}
+
+GLuint loadImage(const char *path) {
+    // 加载图片并获取宽高通道信息
+    int width;
+    int height;
+    int nrChannel;
+    unsigned char *data = stbi_load(path, &width, &height, &nrChannel, 0);
+
+    // 创建并绑定texture
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // 根据数据生成纹理
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    // 生成多级渐远纹理
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    // 纹理环绕方式 重复
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // 纹理过滤方式
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // 释放
+    stbi_image_free(data);
+    return texture;
 }
