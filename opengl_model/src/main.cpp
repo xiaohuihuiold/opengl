@@ -76,7 +76,8 @@ int main(int argc, char **argv) {
     Shader shader("../assets/shader/test_vertex.glsl", "../assets/shader/test_fragment.glsl");
 
     // 加载并创建纹理
-    GLuint textureId = loadImage("../assets/images/wall.jpg");
+    GLuint textureWall = loadImage("../assets/images/wall.jpg");
+    GLuint textureFace = loadImage("../assets/images/face.png");
 
     // 创建顶点缓存对象
     GLuint VBO;
@@ -101,18 +102,24 @@ int main(int argc, char **argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    shader.use();
+
+    glUniform1i(glGetUniformLocation(shader.id, "wallTexture"), 0);
+    glUniform1i(glGetUniformLocation(shader.id, "faceTexture"), 1);
+
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
         // 在每次渲染开始时处理输入事件
         process_input(window);
 
-        shader.use();
-
         // 清除缓冲区
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindTexture(GL_TEXTURE_2D, textureId);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureWall);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, textureFace);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -148,19 +155,26 @@ void process_input(GLFWwindow *window) {
 }
 
 GLuint loadImage(const char *path) {
-    // 加载图片并获取宽高通道信息
-    int width;
-    int height;
-    int nrChannel;
-    unsigned char *data = stbi_load(path, &width, &height, &nrChannel, 0);
-
     // 创建并绑定texture
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
+    // 加载图片并获取宽高通道信息
+    int width;
+    int height;
+    int nrChannel;
+    unsigned char *data = stbi_load(path, &width, &height, &nrChannel, 0);
+    if (!data) {
+        perror("材质加载失败");
+    }
+
     // 根据数据生成纹理
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    GLenum format = GL_RGB;
+    if (nrChannel == 4) {
+        format = GL_RGBA;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     // 生成多级渐远纹理
     glGenerateMipmap(GL_TEXTURE_2D);
 
