@@ -104,6 +104,7 @@ int main(int argc, char **argv) {
 
     shader.use();
 
+    // 设置纹理位置
     glUniform1i(glGetUniformLocation(shader.id, "wallTexture"), 0);
     glUniform1i(glGetUniformLocation(shader.id, "faceTexture"), 1);
 
@@ -164,6 +165,7 @@ GLuint loadImage(const char *path) {
     int width;
     int height;
     int nrChannel;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char *data = stbi_load(path, &width, &height, &nrChannel, 0);
     if (!data) {
         perror("材质加载失败");

@@ -7,5 +7,5 @@ out vec4 FragColor;
 in vec2 TexCoord;
 
 void main() {
-    FragColor = mix(texture(wallTexture, TexCoord), texture(faceTexture, TexCoord),0.5);
+    FragColor = mix(texture(wallTexture, TexCoord), texture(faceTexture, TexCoord),0.2);
 }
