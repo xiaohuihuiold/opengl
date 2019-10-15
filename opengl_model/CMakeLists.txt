@@ -16,7 +16,7 @@ add_library(glad SHARED ./src/glad/glad.c)
 add_library(stb_image SHARED ./src/stb_image/stb_image.cpp)
 
 # 添加项目主程序
-add_executable(opengl_model ./src/main.cpp src/shader/Shader.cpp src/shader/Shader.h)
+add_executable(opengl_model ./src/main.cpp src/shader/Shader.cpp src/shader/Shader.h src/camera/Camera.cpp src/camera/Camera.h src/util/Util.h)
 
 # 连接库 (通用)
 target_link_libraries(opengl_model glad)

@@ -4,25 +4,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "util/Util.h"
 #include "shader/Shader.h"
-#include "stb_image/stb_image.h"
+#include "camera/Camera.h"
 
 #define WINDOW_TITLE "Model"
 
 int WINDOW_WIDTH = 1200;
 int WINDOW_HEIGHT = 720;
-
-GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
-};
-
-GLuint indices[] = {
-        0, 1, 2,
-        0, 2, 3
-};
 
 // 窗口大小改变的回调
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
@@ -30,8 +19,54 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 // 输入事件处理
 void process_input(GLFWwindow *window);
 
-// 图片加载
-GLuint loadImage(const char *path);
+// 鼠标事件处理
+void process_mouse(GLFWwindow *window, double x, double y);
+
+GLfloat vertices[] = {
+        -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+
+        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f
+};
+
+GLuint indices[] = {
+        // front
+        0, 1, 2,
+        0, 2, 3,
+        // back
+        4, 5, 6,
+        4, 6, 7,
+        // top
+        3, 2, 6,
+        3, 6, 7,
+        // bottom
+        0, 1, 5,
+        0, 5, 4,
+        // left
+        0, 4, 7,
+        0, 7, 3,
+        // right
+        1, 5, 6,
+        1, 6, 2,
+};
+
+// 相机
+Camera camera(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+// 物体位置
+glm::mat4 model = glm::mat4(1.0f);
+
+// 渲染时间
+double deltaTime = 0.0f;
+double lastFrame = 0.0f;
+
+// 鼠标位置
+glm::vec2 mousePosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 int main(int argc, char **argv) {
     // 初始化glfw
@@ -60,8 +95,10 @@ int main(int argc, char **argv) {
         return -1;
     }
     glfwMakeContextCurrent(window);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     // 注册窗口大小改变的函数
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, process_mouse);
 
     // 初始化glad
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -72,6 +109,8 @@ int main(int argc, char **argv) {
 
     // 启用多重采样
     glEnable(GL_MULTISAMPLE);
+    // 启用深度测试
+    glEnable(GL_DEPTH_TEST);
     // 线框模式
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -93,10 +132,10 @@ int main(int argc, char **argv) {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     // 链接顶点属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
-    // 链接纹理坐标
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
     glEnableVertexAttribArray(1);
 
     // 创建索引缓冲对象
@@ -108,34 +147,37 @@ int main(int argc, char **argv) {
     shader.use();
     // 设置纹理位置
     shader.setInt("wallTexture", 0);
-    shader.setInt("faceTexture", 1);
-
-    // 变换
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::translate(trans, glm::vec3(1.0f, 0.0f, 0.0f));
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 1.0f));
-    shader.setMat4("transform", trans);
-
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
         // 在每次渲染开始时处理输入事件
         process_input(window);
 
         // 清除缓冲区
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        shader.setMat4("model", model);
+        shader.setMat4("view", camera.view);
+        shader.setMat4("projection", camera.projection);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureWall);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, textureFace);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
         // 交换缓冲以及检查事件
         glfwSwapBuffers(window);
         glfwPollEvents();
+        double currentTime = glfwGetTime();
+        deltaTime = currentTime - lastFrame;
+        lastFrame = currentTime;
     }
 
     // 清理资源
@@ -154,6 +196,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     // 设置视口,渲染窗口的尺寸大小
     // 左下角起点
     glViewport(0, 0, width, height);
+    camera.updateSize(width, height);
 }
 
 // 输入事件处理
@@ -162,41 +205,30 @@ void process_input(GLFWwindow *window) {
         // 按下esc后设置应当关闭窗口
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+    // 根据时间差匀速
+    camera.speed = 2.5f * deltaTime;
+    // 前后移动
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        camera.toFront();
+    } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        camera.toBack();
+    }
+    // 左右移动
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        camera.toLeft();
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        camera.toRight();
+    }
 }
 
-GLuint loadImage(const char *path) {
-    // 创建并绑定texture
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+// 鼠标事件处理
+void process_mouse(GLFWwindow *window, double x, double y) {
+    float deltaX = (float) x - mousePosition.x;
+    float deltaY = mousePosition.y - (float) y;
 
-    // 加载图片并获取宽高通道信息
-    int width;
-    int height;
-    int nrChannel;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load(path, &width, &height, &nrChannel, 0);
-    if (!data) {
-        perror("材质加载失败");
-    }
+    mousePosition.x = x;
+    mousePosition.y = y;
 
-    // 根据数据生成纹理
-    GLenum format = GL_RGB;
-    if (nrChannel == 4) {
-        format = GL_RGBA;
-    }
-    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-    // 生成多级渐远纹理
-    glGenerateMipmap(GL_TEXTURE_2D);
+    camera.updateMouse(deltaX, deltaY);
 
-    // 纹理环绕方式 重复
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // 纹理过滤方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // 释放
-    stbi_image_free(data);
-    return texture;
 }

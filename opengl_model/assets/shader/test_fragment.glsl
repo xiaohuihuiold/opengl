@@ -1,11 +1,10 @@
 #version 330 core
 
-uniform sampler2D wallTexture;
-uniform sampler2D faceTexture;
-
 out vec4 FragColor;
-in vec2 TexCoord;
+
+in vec3 color;
 
 void main() {
-    FragColor = mix(texture(wallTexture, TexCoord), texture(faceTexture, TexCoord),0.2);
+    FragColor = vec4(0.8, 0.5, 0.2, 1.0);
+    FragColor = vec4(color, 1.0);
 }
