@@ -1,6 +1,9 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "shader/Shader.h"
 #include "stb_image/stb_image.h"
 
@@ -103,10 +106,16 @@ int main(int argc, char **argv) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     shader.use();
-
     // 设置纹理位置
-    glUniform1i(glGetUniformLocation(shader.id, "wallTexture"), 0);
-    glUniform1i(glGetUniformLocation(shader.id, "faceTexture"), 1);
+    shader.setInt("wallTexture", 0);
+    shader.setInt("faceTexture", 1);
+
+    // 变换
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::translate(trans, glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 1.0f));
+    shader.setMat4("transform", trans);
 
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {

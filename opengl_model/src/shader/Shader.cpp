@@ -90,3 +90,51 @@ bool Shader::checkLinkError(GLuint program) {
     }
     return true;
 }
+
+void Shader::setBool(const char *name, GLboolean value) {
+    glUniform1i(glGetUniformLocation(this->id, name), (GLint) value);
+}
+
+void Shader::setInt(const char *name, GLint value) {
+    glUniform1i(glGetUniformLocation(this->id, name), value);
+}
+
+void Shader::setFloat(const char *name, GLfloat value) {
+    glUniform1f(glGetUniformLocation(this->id, name), value);
+}
+
+void Shader::setVec2(const char *name, GLfloat v0, GLfloat v1) {
+    glUniform2f(glGetUniformLocation(this->id, name), v0, v1);
+}
+
+void Shader::setVec2(const char *name, const glm::vec2 &vec2) {
+    glUniform2fv(glGetUniformLocation(this->id, name), 1, glm::value_ptr(vec2));
+}
+
+void Shader::setVec3(const char *name, GLfloat v0, GLfloat v1, GLfloat v2) {
+    glUniform3f(glGetUniformLocation(this->id, name), v0, v1, v2);
+}
+
+void Shader::setVec3(const char *name, const glm::vec3 &vec3) {
+    glUniform3fv(glGetUniformLocation(this->id, name), 1, glm::value_ptr(vec3));
+}
+
+void Shader::setVec4(const char *name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) {
+    glUniform4f(glGetUniformLocation(this->id, name), v0, v1, v2, v3);
+}
+
+void Shader::setVec4(const char *name, const glm::vec4 &vec4) {
+    glUniform4fv(glGetUniformLocation(this->id, name), 1, glm::value_ptr(vec4));
+}
+
+void Shader::setMat2(const char *name, const glm::mat2 &mat2) {
+    glUniformMatrix2fv(glGetUniformLocation(this->id, name), 1, GL_FALSE, glm::value_ptr(mat2));
+}
+
+void Shader::setMat3(const char *name, const glm::mat3 &mat3) {
+    glUniformMatrix3fv(glGetUniformLocation(this->id, name), 1, GL_FALSE, glm::value_ptr(mat3));
+}
+
+void Shader::setMat4(const char *name, const glm::mat4 &mat4) {
+    glUniformMatrix4fv(glGetUniformLocation(this->id, name), 1, GL_FALSE, glm::value_ptr(mat4));
+}
