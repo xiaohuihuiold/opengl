@@ -23,36 +23,47 @@ void process_input(GLFWwindow *window);
 void process_mouse(GLFWwindow *window, double x, double y);
 
 GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
 
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f
-};
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 
-GLuint indices[] = {
-        // front
-        0, 1, 2,
-        0, 2, 3,
-        // back
-        4, 5, 6,
-        4, 6, 7,
-        // top
-        3, 2, 6,
-        3, 6, 7,
-        // bottom
-        0, 1, 5,
-        0, 5, 4,
-        // left
-        0, 4, 7,
-        0, 7, 3,
-        // right
-        1, 5, 6,
-        1, 6, 2,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f
 };
 
 // 相机
@@ -66,7 +77,7 @@ double deltaTime = 0.0f;
 double lastFrame = 0.0f;
 
 // 鼠标位置
-glm::vec2 mousePosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+glm::vec2 mousePosition;
 
 int main(int argc, char **argv) {
     // 初始化glfw
@@ -115,7 +126,8 @@ int main(int argc, char **argv) {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // 创建着色器
-    Shader shader("../assets/shader/test_vertex.glsl", "../assets/shader/test_fragment.glsl");
+    Shader cubeShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
+    Shader lightShader("../assets/shader/light_vertex.glsl", "../assets/shader/light_fragment.glsl");
 
     // 加载并创建纹理
     GLuint textureWall = loadImage("../assets/images/wall.jpg");
@@ -127,26 +139,41 @@ int main(int argc, char **argv) {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // 创建顶点数组对象
-    GLuint VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    // 创建箱子顶点数组对象
+    GLuint cubeVAO;
+    glGenVertexArrays(1, &cubeVAO);
+    glBindVertexArray(cubeVAO);
     // 链接顶点属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
+    glEnableVertexAttribArray(0);
+    // 材质属性
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
+    glEnableVertexAttribArray(1);
+    // 法向量
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 5));
+    glEnableVertexAttribArray(2);
+
+    // 创建光源顶点数组对象
+    GLuint lightVAO;
+    glGenVertexArrays(1, &lightVAO);
+    glBindVertexArray(lightVAO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
-    glEnableVertexAttribArray(1);
-
-    // 创建索引缓冲对象
-    GLuint EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    shader.use();
+    cubeShader.use();
     // 设置纹理位置
-    shader.setInt("wallTexture", 0);
+    cubeShader.setInt("box", 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureWall);
+
+
+    glm::mat4 lightModel = glm::mat4(1.0f);
+    lightModel = glm::translate(lightModel, glm::vec3(1.0f, 1.0f, 1.0f));
+    lightModel = glm::scale(lightModel, glm::vec3(0.1f, 0.1f, 0.1f));
+
+    glm::vec3 objectColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 lightColor = glm::vec3(1.0f, 0.8f, 0.7f);
+
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
         // 在每次渲染开始时处理输入事件
@@ -156,21 +183,28 @@ int main(int argc, char **argv) {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // 绘制箱子
+        cubeShader.use();
+        glBindVertexArray(cubeVAO);
         model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
+        cubeShader.setMat4("model", model);
+        cubeShader.setMat4("view", camera.view);
+        cubeShader.setMat4("projection", camera.projection);
+        cubeShader.setVec3("objectColor", objectColor);
+        cubeShader.setVec3("lightColor", lightColor);
+        cubeShader.setVec3("lightPos", glm::vec3(1.0f, 1.0f, 1.0f));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        shader.setMat4("model", model);
-        shader.setMat4("view", camera.view);
-        shader.setMat4("projection", camera.projection);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureWall);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, textureFace);
-        glBindVertexArray(VAO);
-
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        // 绘制光源
+        lightShader.use();
+        glBindVertexArray(lightVAO);
+        lightShader.setMat4("model", lightModel);
+        lightShader.setMat4("view", camera.view);
+        lightShader.setMat4("projection", camera.projection);
+        lightShader.setVec3("lightColor", lightColor);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // 交换缓冲以及检查事件
         glfwSwapBuffers(window);
@@ -181,8 +215,7 @@ int main(int argc, char **argv) {
     }
 
     // 清理资源
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &cubeVAO);
     glDeleteBuffers(1, &VBO);
     glfwTerminate();
     return 0;
