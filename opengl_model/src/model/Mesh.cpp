@@ -16,6 +16,7 @@ void Mesh::draw(Shader shader) {
     GLuint diffuseNum = 1;
     GLuint specularNum = 1;
 
+    glBindVertexArray(this->VAO);
     for (int i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i);
 
@@ -30,8 +31,6 @@ void Mesh::draw(Shader shader) {
         shader.setInt((name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-
-    glBindVertexArray(this->VAO);
     glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, &indices[0]);
 
     glBindVertexArray(0);
