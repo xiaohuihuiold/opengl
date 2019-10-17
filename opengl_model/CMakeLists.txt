@@ -22,6 +22,7 @@ add_executable(opengl_model ./src/main.cpp src/shader/Shader.cpp src/shader/Shad
 target_link_libraries(opengl_model glad)
 target_link_libraries(opengl_model stb_image)
 target_link_libraries(opengl_model glfw3)
+target_link_libraries(opengl_model assimp)
 
 # 连接库 (按平台)
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
