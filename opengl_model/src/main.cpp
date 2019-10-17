@@ -195,6 +195,7 @@ int main(int argc, char **argv) {
         cubeShader.setVec3("objectColor", objectColor);
         cubeShader.setVec3("lightColor", lightColor);
         cubeShader.setVec3("lightPos", glm::vec3(1.0f, 1.0f, 1.0f));
+        cubeShader.setVec3("viewPos", camera.position);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // 绘制光源
