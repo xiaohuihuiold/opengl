@@ -7,6 +7,7 @@
 #include "util/Util.h"
 #include "shader/Shader.h"
 #include "camera/Camera.h"
+#include "model/Model.h"
 
 #define WINDOW_TITLE "Model"
 
@@ -129,6 +130,8 @@ int main(int argc, char **argv) {
     Shader cubeShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
     Shader lightShader("../assets/shader/light_vertex.glsl", "../assets/shader/light_fragment.glsl");
 
+    Model myModel("../assets/model/nanosuit/nanosuit.obj");
+
     // 加载并创建纹理
     GLuint textureWall = loadImage("../assets/images/wall.jpg");
     GLuint textureFace = loadImage("../assets/images/face.png");
@@ -138,20 +141,6 @@ int main(int argc, char **argv) {
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // 创建箱子顶点数组对象
-    GLuint cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glBindVertexArray(cubeVAO);
-    // 链接顶点属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
-    glEnableVertexAttribArray(0);
-    // 材质属性
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 3));
-    glEnableVertexAttribArray(1);
-    // 法向量
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (sizeof(GLfloat) * 5));
-    glEnableVertexAttribArray(2);
 
     // 创建光源顶点数组对象
     GLuint lightVAO;
@@ -185,7 +174,6 @@ int main(int argc, char **argv) {
 
         // 绘制箱子
         cubeShader.use();
-        glBindVertexArray(cubeVAO);
         model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -196,7 +184,7 @@ int main(int argc, char **argv) {
         cubeShader.setVec3("lightColor", lightColor);
         cubeShader.setVec3("lightPos", glm::vec3(1.0f, 1.0f, 1.0f));
         cubeShader.setVec3("viewPos", camera.position);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        myModel.draw(cubeShader);
 
         // 绘制光源
         lightShader.use();
@@ -216,7 +204,6 @@ int main(int argc, char **argv) {
     }
 
     // 清理资源
-    glDeleteVertexArrays(1, &cubeVAO);
     glDeleteBuffers(1, &VBO);
     glfwTerminate();
     return 0;

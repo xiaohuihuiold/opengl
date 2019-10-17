@@ -1,6 +1,6 @@
 #version 330 core
 
-uniform sampler2D box;
+uniform sampler2D texture_diffuse1;
 uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPos;
@@ -34,5 +34,5 @@ void main(){
 
     vec3 result = (ambient + diffuse + specular)* objectColor;
 
-    FragColor = vec4(vec3(texture(box, TexCoords)) *result, 1.0);
+    FragColor = vec4(vec3(texture(texture_diffuse1, TexCoords)) *result, 1.0);
 }
