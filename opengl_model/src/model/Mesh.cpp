@@ -27,16 +27,15 @@ void Mesh::draw(Shader shader) {
         } else if (name == "texture_specular") {
             number = std::to_string(specularNum++);
         }
-
-        shader.setInt(("material." + name + number).c_str(), i);
+        shader.setInt((name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
 
-    glActiveTexture(GL_TEXTURE0);
-
     glBindVertexArray(this->VAO);
-    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, &indices[0]);
+
     glBindVertexArray(0);
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void Mesh::setupMesh() {

@@ -6,6 +6,7 @@
 #include "../stb_image/stb_image.h"
 
 Model::Model(char *path) {
+    this->loadModel(path);
 }
 
 void Model::draw(Shader shader) {
@@ -16,7 +17,8 @@ void Model::draw(Shader shader) {
 
 void Model::loadModel(std::string path) {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = importer.ReadFile(path,
+                                             aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Assimp错误:" << importer.GetErrorString() << std::endl;
         return;
@@ -74,15 +76,14 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
             indices.push_back(face.mIndices[j]);
         }
     }
-    if (mesh->mMaterialIndex >= 0) {
-        aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-        std::vector<Texture> diffuseMaps = loadMaterialTextures(material,
-                                                                aiTextureType_DIFFUSE, "texture_diffuse");
-        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-        std::vector<Texture> specularMaps = loadMaterialTextures(material,
-                                                                 aiTextureType_SPECULAR, "texture_specular");
-        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    }
+    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    std::vector<Texture> diffuseMaps = loadMaterialTextures(material,
+                                                            aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    std::vector<Texture> specularMaps = loadMaterialTextures(material,
+                                                             aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
     return Mesh(vertices, indices, textures);
 }
 
@@ -101,7 +102,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
         }
         if (!skip) {   // 如果纹理还没有被加载，则加载它
             Texture texture;
-            texture.id = TextureFromFile(str.C_Str(), directory, false);
+            texture.id = TextureFromFile(str.C_Str(), directory, true);
             texture.type = typeName;
             texture.path = str.C_Str();
             textures.push_back(texture);
