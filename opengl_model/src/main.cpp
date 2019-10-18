@@ -209,6 +209,8 @@ int main(int argc, char **argv) {
         glStencilMask(0xff);
         glEnable(GL_DEPTH_TEST);
 
+        glStencilFunc(GL_ALWAYS, 1, 0xff);
+        glStencilMask(0xff);
         // 绘制光源
         lightShader.use();
         glBindVertexArray(lightVAO);
