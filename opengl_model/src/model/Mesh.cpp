@@ -31,7 +31,7 @@ void Mesh::draw(Shader shader) {
         shader.setInt((name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, &indices[0]);
+    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
@@ -46,7 +46,7 @@ void Mesh::setupMesh() {
     // 填充顶点数据
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(GLfloat), &(this->vertices[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(Vertex), &(this->vertices[0]), GL_STATIC_DRAW);
     // 填充索引数据
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &(this->indices[0]), GL_STATIC_DRAW);

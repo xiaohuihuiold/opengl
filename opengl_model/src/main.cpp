@@ -133,8 +133,8 @@ int main(int argc, char **argv) {
     Model myModel("../assets/model/nanosuit/nanosuit.obj");
 
     // 加载并创建纹理
-    GLuint textureWall = loadImage("../assets/images/wall.jpg");
-    GLuint textureFace = loadImage("../assets/images/face.png");
+    //GLuint textureWall = loadImage("../assets/images/wall.jpg");
+    //GLuint textureFace = loadImage("../assets/images/face.png");
 
     // 创建顶点缓存对象
     GLuint VBO;
@@ -152,16 +152,18 @@ int main(int argc, char **argv) {
     cubeShader.use();
     // 设置纹理位置
     cubeShader.setInt("box", 0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureWall);
+    //glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, textureWall);
 
 
     glm::mat4 lightModel = glm::mat4(1.0f);
-    lightModel = glm::translate(lightModel, glm::vec3(1.0f, 1.0f, 1.0f));
+    lightModel = glm::translate(lightModel, glm::vec3(1.0f, 5.0f, 1.0f));
     lightModel = glm::scale(lightModel, glm::vec3(0.1f, 0.1f, 0.1f));
 
+    model = glm::scale(model, glm::vec3(0.4, 0.4, 0.4));
+
     glm::vec3 objectColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightColor = glm::vec3(1.0f, 0.8f, 0.7f);
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
@@ -169,14 +171,15 @@ int main(int argc, char **argv) {
         process_input(window);
 
         // 清除缓冲区
-        glClearColor(0.6f, 0.5f, 0.6f, 1.0f);
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 绘制箱子
         cubeShader.use();
-        model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
+        //model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         cubeShader.setMat4("model", model);
         cubeShader.setMat4("view", camera.view);
         cubeShader.setMat4("projection", camera.projection);

@@ -15,7 +15,7 @@ void Model::draw(Shader shader) {
     }
 }
 
-void Model::loadModel(std::string path) {
+void Model::loadModel(const std::string& path) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
                                              aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -87,7 +87,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
+std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string& typeName) {
     std::vector<Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
