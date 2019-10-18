@@ -123,14 +123,20 @@ int main(int argc, char **argv) {
     glEnable(GL_MULTISAMPLE);
     // 启用深度测试
     glEnable(GL_DEPTH_TEST);
+    // 启用模板测试
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, 0xff);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     // 线框模式
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // 创建着色器
-    Shader cubeShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
+    Shader modelShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
     Shader lightShader("../assets/shader/light_vertex.glsl", "../assets/shader/light_fragment.glsl");
+    Shader modelOutlineShader("../assets/shader/cube_vertex.glsl", "../assets/shader/outline_fragment.glsl");
 
-    Model myModel("../assets/model/nanosuit/nanosuit.obj");
+    Model ballModel("../assets/model/blender/ball.obj");
+    Model headModel("../assets/model/blender/head.obj");
 
     // 加载并创建纹理
     //GLuint textureWall = loadImage("../assets/images/wall.jpg");
@@ -149,18 +155,18 @@ int main(int argc, char **argv) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
 
-    cubeShader.use();
+    modelShader.use();
     // 设置纹理位置
-    cubeShader.setInt("box", 0);
+    //modelShader.setInt("box", 0);
     //glActiveTexture(GL_TEXTURE0);
     //glBindTexture(GL_TEXTURE_2D, textureWall);
 
 
     glm::mat4 lightModel = glm::mat4(1.0f);
-    lightModel = glm::translate(lightModel, glm::vec3(1.0f, 5.0f, 1.0f));
+    lightModel = glm::translate(lightModel, glm::vec3(3.0f, 1.0f, 1.0f));
     lightModel = glm::scale(lightModel, glm::vec3(0.1f, 0.1f, 0.1f));
 
-    model = glm::scale(model, glm::vec3(0.4, 0.4, 0.4));
+    //model = glm::scale(model, glm::vec3(0.4, 0.4, 0.4));
 
     glm::vec3 objectColor = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -172,22 +178,36 @@ int main(int argc, char **argv) {
 
         // 清除缓冲区
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+        glStencilFunc(GL_ALWAYS, 1, 0xff);
+        glStencilMask(0xff);
         // 绘制箱子
-        cubeShader.use();
+        modelShader.use();
         //model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
         //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
         //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        cubeShader.setMat4("model", model);
-        cubeShader.setMat4("view", camera.view);
-        cubeShader.setMat4("projection", camera.projection);
-        cubeShader.setVec3("objectColor", objectColor);
-        cubeShader.setVec3("lightColor", lightColor);
-        cubeShader.setVec3("lightPos", glm::vec3(1.0f, 1.0f, 1.0f));
-        cubeShader.setVec3("viewPos", camera.position);
-        myModel.draw(cubeShader);
+        model = glm::rotate(model, glm::radians(0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        modelShader.setMat4("view", camera.view);
+        modelShader.setMat4("projection", camera.projection);
+        modelShader.setVec3("objectColor", objectColor);
+        modelShader.setVec3("lightColor", lightColor);
+        modelShader.setVec3("lightPos", glm::vec3(3.0f, 1.0f, 1.0f));
+        modelShader.setVec3("viewPos", camera.position);
+        headModel.draw(modelShader);
+
+        // 绘制轮廓
+        glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+        glStencilMask(0x00);
+        glDisable(GL_DEPTH_TEST);
+        modelOutlineShader.use();
+        modelOutlineShader.setMat4("model", glm::scale(model, glm::vec3(1.02f, 1.02f, 1.02f)));
+        modelOutlineShader.setMat4("view", camera.view);
+        modelOutlineShader.setMat4("projection", camera.projection);
+        headModel.draw(modelOutlineShader);
+        glStencilMask(0xff);
+        glEnable(GL_DEPTH_TEST);
 
         // 绘制光源
         lightShader.use();

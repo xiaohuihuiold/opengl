@@ -14,7 +14,7 @@ in vec3 FragPos;
 
 void main(){
     // 环境光
-    float ambientStrength = 0.2;
+    float ambientStrength = 0.3;
     vec3 ambient= ambientStrength * lightColor;
     // 计算从片段到光源的向量
     vec3 lightDir = normalize(lightPos - FragPos);
@@ -34,5 +34,5 @@ void main(){
 
     vec3 result = (ambient + diffuse + specular)* objectColor;
 
-    FragColor = vec4(vec3(texture(texture_diffuse1, TexCoords)) *result, 1.0);
+    FragColor = vec4(vec3(0.6, 0.5, 0.55) *result, 1.0);
 }
