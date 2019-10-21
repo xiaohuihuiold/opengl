@@ -126,6 +126,7 @@ int main(int argc, char **argv) {
     // 启用模板测试
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_ALWAYS, 1, 0xff);
+    // 模板和深度测试都只通过一个时保留模板值,都通过时将模板值替换为上面模板函数的ref: 1
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     // 线框模式
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -134,6 +135,7 @@ int main(int argc, char **argv) {
     Shader modelShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
     Shader lightShader("../assets/shader/light_vertex.glsl", "../assets/shader/light_fragment.glsl");
     Shader modelOutlineShader("../assets/shader/cube_vertex.glsl", "../assets/shader/outline_fragment.glsl");
+    Shader depthShader("../assets/shader/depth_vertex.glsl", "../assets/shader/depth_fragment.glsl");
 
     Model ballModel("../assets/model/blender/ball.obj");
     Model headModel("../assets/model/blender/head.obj");
@@ -154,6 +156,29 @@ int main(int argc, char **argv) {
     glBindVertexArray(lightVAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
+/*
+    // 深度贴图帧缓冲对象
+    GLuint depthMapFBO;
+    glGenFramebuffers(1, &depthMapFBO);
+
+    // 创建深度缓冲使用的2D纹理
+    const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+    GLuint depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
+                 nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // 把纹理作为帧缓冲的深度缓冲
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
     modelShader.use();
     // 设置纹理位置
@@ -171,23 +196,35 @@ int main(int argc, char **argv) {
     glm::vec3 objectColor = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     // 实现渲染循环
     while (!glfwWindowShouldClose(window)) {
         // 在每次渲染开始时处理输入事件
         process_input(window);
 
-        // 清除缓冲区
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+      /*  glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+        glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0.0f), glm::vec3(1.0));
+        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        depthShader.use();
+        depthShader.setMat4("lightSpaceMatrix", lightProjection * lightView);
 
-        glStencilFunc(GL_ALWAYS, 1, 0xff);
-        glStencilMask(0xff);
-        // 绘制箱子
-        modelShader.use();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+*/
+        glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         //model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
         //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
         //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime() + 2.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::rotate(model, glm::radians(0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
+        // 清除缓冲区
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        // 对每个片段的模板值都设置为1
+        glStencilFunc(GL_ALWAYS, 1, 0xff);
+        // 启用模板缓冲写入
+        glStencilMask(0xff);
+        // 绘制箱子
+        modelShader.use();
         modelShader.setMat4("model", model);
         modelShader.setMat4("view", camera.view);
         modelShader.setMat4("projection", camera.projection);
@@ -198,7 +235,9 @@ int main(int argc, char **argv) {
         headModel.draw(modelShader);
 
         // 绘制轮廓
+        // 只绘制上一步模板值没有被更新为1的片段
         glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+        // 禁用模板缓冲写入
         glStencilMask(0x00);
         glDisable(GL_DEPTH_TEST);
         modelOutlineShader.use();
@@ -206,7 +245,6 @@ int main(int argc, char **argv) {
         modelOutlineShader.setMat4("view", camera.view);
         modelOutlineShader.setMat4("projection", camera.projection);
         headModel.draw(modelOutlineShader);
-        glStencilMask(0xff);
         glEnable(GL_DEPTH_TEST);
 
         glStencilFunc(GL_ALWAYS, 1, 0xff);
