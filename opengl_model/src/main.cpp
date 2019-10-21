@@ -132,17 +132,12 @@ int main(int argc, char **argv) {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // 创建着色器
-    Shader modelShader("../assets/shader/cube_vertex.glsl", "../assets/shader/cube_fragment.glsl");
+    Shader modelShader("../assets/shader/model_vertex.glsl", "../assets/shader/model_fragment.glsl");
     Shader lightShader("../assets/shader/light_vertex.glsl", "../assets/shader/light_fragment.glsl");
-    Shader modelOutlineShader("../assets/shader/cube_vertex.glsl", "../assets/shader/outline_fragment.glsl");
-    Shader depthShader("../assets/shader/depth_vertex.glsl", "../assets/shader/depth_fragment.glsl");
+    Shader modelOutlineShader("../assets/shader/model_vertex.glsl", "../assets/shader/outline_fragment.glsl");
 
     Model ballModel("../assets/model/blender/ball.obj");
     Model headModel("../assets/model/blender/head.obj");
-
-    // 加载并创建纹理
-    //GLuint textureWall = loadImage("../assets/images/wall.jpg");
-    //GLuint textureFace = loadImage("../assets/images/face.png");
 
     // 创建顶点缓存对象
     GLuint VBO;
@@ -156,37 +151,8 @@ int main(int argc, char **argv) {
     glBindVertexArray(lightVAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) 0);
     glEnableVertexAttribArray(0);
-/*
-    // 深度贴图帧缓冲对象
-    GLuint depthMapFBO;
-    glGenFramebuffers(1, &depthMapFBO);
-
-    // 创建深度缓冲使用的2D纹理
-    const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-    GLuint depthMap;
-    glGenTextures(1, &depthMap);
-    glBindTexture(GL_TEXTURE_2D, depthMap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
-                 nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    // 把纹理作为帧缓冲的深度缓冲
-    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
     modelShader.use();
-    // 设置纹理位置
-    //modelShader.setInt("box", 0);
-    //glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, textureWall);
-
-
     glm::mat4 lightModel = glm::mat4(1.0f);
     lightModel = glm::translate(lightModel, glm::vec3(3.0f, 1.0f, 1.0f));
     lightModel = glm::scale(lightModel, glm::vec3(0.1f, 0.1f, 0.1f));
@@ -202,16 +168,6 @@ int main(int argc, char **argv) {
         // 在每次渲染开始时处理输入事件
         process_input(window);
 
-      /*  glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-        glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0.0f), glm::vec3(1.0));
-        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        depthShader.use();
-        depthShader.setMat4("lightSpaceMatrix", lightProjection * lightView);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-*/
         glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         //model = glm::rotate(model, glm::radians((GLfloat) sin(glfwGetTime())), glm::vec3(1.0f, 0.0f, 0.0f));
         //model = glm::rotate(model, glm::radians((GLfloat) cos(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
